@@ -99,7 +99,7 @@ div span {
 	border-radius: 50%;
 	cursor: pointer;
 	transform: translate(-50%, -50%);
-	border: 2px linear-gradient(80deg, #2d1f77, #6b00b6, #ff00cc)
+	border: 2px linear-gradient(80deg, #2d1f77, #6b00b6, #ff00cc);
 	box-shadow: 0 0 5px rgba(0,0,0,0.5);
 }
 .pin:hover {
@@ -133,4 +133,16 @@ div span {
 	max-width: 100%;
 	border-radius: 5px;
 	margin-bottom: 10px;
+}
+
+.close {
+	float: right;
+	font-size: 20px;
+	font-weight: bold;
+	cursor: pointer;
+	color: #333;
+}
+
+.close:hover {
+	color: red;
 }

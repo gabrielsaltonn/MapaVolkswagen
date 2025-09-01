@@ -12,7 +12,7 @@
         <h1>Mapa de Impressoras</h1>
         <div class="actions">
             <input id="search" type="search" placeholder="Filtrar por S/N, modelo, setor... " aria-label="Buscar impressora" />
-            <button id="toggleHelper" title="Capturar coordenadas ao clicar no mapa">Capturar coordenadas</button>
+            <button id="toggleHelper" type="button" title="Capturar coordenadas ao clicar no mapa">Capturar coordenadas</button>
         </div>
     </header>
 
@@ -30,21 +30,22 @@
     </div>
 
     <!--Tela que mostrará as informações das impressoras e botões de fechamento-->
-    <div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="mTitle" aria-describedby="mDesc"></div>
-        <button class="Close" id="closemodal" aria-label="Fechar">&times;</button>
+    <div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="mTitle" aria-describedby="mDesc">
+        <button class="close" id="closemodal" aria-label="fechar">&times;</button>
         <div class="card">
             <img id="mImg" alt="" />
             <div class="info">
                 <h2 id="mTitle"></h2>
                 <p id="mDesc"> Detalhe da impressora selecionada</p>
                 <dl class="meta">
-                    <dt>Modelo:</dt><dd id="mSerial"></dd>
+                    <dt>Modelo:</dt><dd id="mModel"></dd>
                     <dt>S/N:</dt><dd id="mSerial"></dd>
                     <dt>Setor / Local</dt><dd id="mLoc"></dd>
                     <dt>Observações</dt><dd id="mNotes"></dd>
-                </d1>
+                </dl>
             </div>
         </div>
     </div>
+    <script src="script.js"></script>
 </body>
 </html>
