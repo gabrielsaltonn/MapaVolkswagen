@@ -23,26 +23,27 @@
     </div>
 
     <!--Adicionar imagem do mapa/planta do local-->
-    <div class="map-wrap" id="mapWrap" arial-label="Planta do local com marcadores de impressoras">
-        <img id="floor" scr="img/fabrica.png" alt="Planta do local" />
+    <div class="map-wrap" id="mapWrap" aria-label="Planta do local com marcadores de impressoras">
+        <img id="floor" src="./img/fabrica.png" alt="Planta do local"/>
         <div class="pins" id="pins"></div>
     </div>
 
     <!--Tela que mostrará as informações das impressoras e botões de fechamento-->
-    <div class="modal" id="modal" role="dialog" arial-modal="true" aria-labellebdy="mTitle" aria-describedby="mDesc"></div>
+    <div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="mTitle" aria-describedby="mDesc"></div>
         <button class="Close" id="closemodal" aria-label="Fechar">&times;</button>
         <div class="card">
             <img id="mImg" alt="" />
             <div class="info">
                 <h2 id="mTitle"></h2>
-                <p id="mDesc"> Detalhe da impressora selecionada</p>
-                <d1 class="meta">
-                    <dt>Modelo</dt><dd id="mSerial"></dd>
-                    
-                </dt>
+                <p id="mDesc" style="margin-top:0;color:#6b7280"> Detalhe da impressora selecionada</p>
+                <dl class="meta">
+                    <dt>Modelo:</dt><dd id="mSerial"></dd>
+                    <dt>S/N:</dt><dd id="mSerial"></dd>
+                    <dt>Setor / Local</dt><dd id="mLoc"></dd>
+                    <dt>Observações</dt><dd id="mNotes"></dd>
                 </d1>
             </div>
         </div>
-
+    </div>
 </body>
 </html>
