@@ -46,3 +46,91 @@ table {
 	border-collapse: collapse;
 	border-spacing: 0;
 }
+
+/*Estilização geral*/
+
+body {
+	font-family: Arial, sans-serif;
+	margin: 0;
+	padding: 0;
+	text-align: center;
+	background: linear-gradient(80deg, #2d1f77, #6b00b6, #ff00cc)
+}
+
+/*Sobre a cor da escrita*/
+
+h1 {
+	color: #ffff;
+}
+
+div span {
+	color: aliceblue;
+}
+
+/*Container do mapa*/
+
+#map-container {
+	position: relative;
+	width: 90%;
+	max-width: 100px;
+	margin: 200px auto; 
+	border: 2px solid #002e6e;
+	border-radius: 10px;
+	overflow: hidden;
+}
+
+/*Sobre a imagem do mapa*/
+
+#map {
+	width: 100%;
+	height: auto;
+	display: block;
+	transform-origin: center center;
+	transition: transform 0.2s ease-in-out;
+}
+
+/*Sobre os PINS*/
+
+.pin {
+	position: absolute;
+	width: 16px;
+	height: 16px;
+	background-color: solid blue;
+	border-radius: 50%;
+	cursor: pointer;
+	transform: translate(-50%, -50%);
+	border: 2px linear-gradient(80deg, #2d1f77, #6b00b6, #ff00cc)
+	box-shadow: 0 0 5px rgba(0,0,0,0.5);
+}
+.pin:hover {
+	background-color: red;
+}
+
+/*Quadro de apresentação das impressoras adicionadas*/
+
+.modal {
+	display: none;
+	position: fixed;
+	z-index: 1000;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height:100%;
+	background-color: aliceblue;
+}
+
+.modal-content {
+	background: aliceblue;
+	margin: 10% auto;
+	padding: 20px;
+	border-radius: 10px;
+	width: 300px;
+	text-align: left;
+	box-shadow: 0 0 15px rgba(0,0,0,0.5)
+}
+
+.modal-content img {
+	max-width: 100%;
+	border-radius: 5px;
+	margin-bottom: 10px;
+}
