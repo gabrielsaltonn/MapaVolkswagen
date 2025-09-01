@@ -4,13 +4,45 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Mapa de Impressoras</title>
-</head> 
+</head>
 <body>
+    <!--Botões de pesquisa e coleta de coordenadas-->
     <header>
         <h1>Mapa de Impressoras</h1>
         <div class="actions">
-            <input id="search" type="search" placeholder="Filtrar por S/N, modelo, setor... " 
+            <input id="search" type="search" placeholder="Filtrar por S/N, modelo, setor... " aria-label="Buscar impressora" />
+            <button id="toggleHelper" title="Capturar coordenadas ao clicar no mapa">Capturar coordenadas</button>
         </div>
     </header>
+
+    <!--Spam de dica e de coordenada do pin-->
+    <div class="helper">
+        <span class="pill">
+            Dica: clique em capturar coordenadas", depois clique no ponto da planta para obter <strong>X%</strong> e <strong>Y%</strong>
+        </span>
+    </div>
+
+    <!--Adicionar imagem do mapa/planta do local-->
+    <div class="map-wrap" id="mapWrap" arial-label="Planta do local com marcadores de impressoras">
+        <img id="floor" scr="img/fabrica.png" alt="Planta do local" />
+        <div class="pins" id="pins"></div>
+    </div>
+
+    <!--Tela que mostrará as informações das impressoras e botões de fechamento-->
+    <div class="modal" id="modal" role="dialog" arial-modal="true" aria-labellebdy="mTitle" aria-describedby="mDesc"></div>
+        <button class="Close" id="closemodal" aria-label="Fechar">&times;</button>
+        <div class="card">
+            <img id="mImg" alt="" />
+            <div class="info">
+                <h2 id="mTitle"></h2>
+                <p id="mDesc"> Detalhe da impressora selecionada</p>
+                <d1 class="meta">
+                    <dt>Modelo</dt><dd id="mSerial"></dd>
+                    
+                </dt>
+                </d1>
+            </div>
+        </div>
+
 </body>
 </html>
