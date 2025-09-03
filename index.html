@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <!--Botões de pesquisa e coleta de coordenadas-->
+    <!--Cabeçalho-->
     <header>
         <h1>Mapa de Impressoras</h1>
         <img id="logoSimpress" class="logo1" src="./logo/logo1.png" alt="logoSimpress">
@@ -16,30 +16,31 @@
         </div>
     </header>
         
-    <!--Spam de dica e de coordenada do pin-->
+    <!--Dica-->
     <div class="helper">
         <span class="pill">
-            Dica: clique em "capturar coordenadas", depois clique no ponto da planta para obter <strong>X%</strong> e <strong>Y%</strong>
+            Dica: clique em 'Adicionar impressora' e dê dois cliques no mapa para adicioná-las!
         </span>
     </div>
 
-    <!--Adicionar imagem do mapa/planta do local-->
-    <div class="map-wrap" id="mapWrap" aria-label="Planta do local com marcadores de impressoras">
-        <div id="panzoom-area">
-            <img id="floor" src="./img/fabrica.png" alt="Planta do local"/>
-            <div class="pins" id="pins"></div>
+    <!--Contêiner mapa + botões-->
+    <div class="map-container">
+        <!-- Mapa -->
+        <div class="map-wrap" id="mapWrap" aria-label="Planta do local com marcadores de impressoras">
+            <div id="panzoom-area">
+                <img id="floor" src="./img/fabrica.png" alt="Planta do local"/>
+                <div class="pins" id="pins"></div>
+            </div>
+        </div>
+
+        <!-- Botões ao lado do mapa -->
+        <div class="sidebar-buttons">
+            <button id="toggleHelper" type="button" title="Dê dois cliques no local para adicionar a impressora">➕ Adicionar impressora</button>
+            <button id="deletePrinterSidebarBtn" type="button">🗑 Excluir impressora</button>
         </div>
     </div>
 
-    <!--Adicionar botões laterais-->
-    <div class="sidebar-buttons">
-        <button id="toggleHelper" type="button" title="Dê dois cliques no local para adicionar a impressora">
-            ➕ Adicionar impressora
-        </button>
-        <button id="deletePrinterSidebarBtn" type="button">🗑 Excluir impressora</button>
-    </div>
-
-    <!--Tela que mostrará as informações das impressoras e botões de fechamento-->
+    <!-- Modal com informações da impressora -->
     <div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="mTitle" aria-describedby="mDesc">
         <button class="close" id="closemodal" aria-label="fechar">&times;</button>
         <div class="card">
@@ -53,3 +54,13 @@
                     <dt>Setor / Local</dt><dd id="mLoc"></dd>
                     <dt>Observações</dt><dd id="mNotes"></dd>
                 </dl>
+                <button id="deletePrinterBtn">🗑 Excluir Impressora</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://unpkg.com/@panzoom/panzoom/dist/panzoom.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
