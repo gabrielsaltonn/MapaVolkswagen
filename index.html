@@ -12,28 +12,30 @@
         <h1>Mapa de Impressoras</h1>
         <div class="actions">
             <input id="search" type="search" placeholder="Filtrar por S/N, modelo, setor... " aria-label="Buscar impressora" />
-            <button id="toggleHelper" type="button" title="Capturar coordenadas ao clicar no mapa">Capturar coordenadas</button>
+            <button id="toggleHelper" type="button" title="Capturar coordenadas ao clicar no mapa">Adicionar impressoras</button>
         </div>
     </header>
 
     <!--Spam de dica e de coordenada do pin-->
     <div class="helper">
         <span class="pill">
-            Dica: clique em capturar coordenadas", depois clique no ponto da planta para obter <strong>X%</strong> e <strong>Y%</strong>
+            Dica: Clique no mapa para adicionar a impressora. Utilize o ZOOM para maior precisão.
         </span>
     </div>
 
     <!--Adicionar imagem do mapa/planta do local-->
     <div class="map-wrap" id="mapWrap" aria-label="Planta do local com marcadores de impressoras">
-        <img id="floor" src="./img/fabrica.png" alt="Planta do local"/>
-        <div class="pins" id="pins"></div>
-    </div>
+        <div id="panzoom-area">
+            <img id="floor" src="./img/fabrica.png" alt="Planta do local"/>
+            <div class="pins" id="pins"></div>
+        </div>
 
     <!--Tela que mostrará as informações das impressoras e botões de fechamento-->
     <div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="mTitle" aria-describedby="mDesc">
         <button class="close" id="closemodal" aria-label="fechar">&times;</button>
+        <button id="deletePrinterBtn">🗑 Excluir Impressora</button>
         <div class="card">
-            <img id="mImg" alt="" />
+            <img id="mImg" alt=""/>
             <div class="info">
                 <h2 id="mTitle"></h2>
                 <p id="mDesc"> Detalhe da impressora selecionada</p>

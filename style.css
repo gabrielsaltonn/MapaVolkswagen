@@ -81,7 +81,7 @@ div span {
     width: 90%;
     max-width: 800px;
     margin: 20px auto;
-    border: 2px solid #002e6e;
+    border: 2px blue;
     border-radius: 10px;
     overflow: hidden;
     touch-action: none; /* evita conflitos no mobile */
@@ -106,15 +106,40 @@ div span {
 
 /*Sobre os PINS*/
 
+#panzoom-area {
+	position: relative;
+	width: 100%;
+	height: auto;	
+}
+
+#panzoom-area .pins{
+	 position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+}
+
+.pins {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	pointer-events: none;
+}
+
 .pin {
 	position: absolute;
-	width: 16px;
-	height: 16px;
-	background-color: solid blue;
+	width:1%;
+	height: 1%;
+	background: red;
 	border-radius: 50%;
 	cursor: pointer;
+	pointer-events: auto;
 	transform: translate(-50%, -50%);
-	border: 2px linear-gradient(80deg, #2d1f77, #6b00b6, #ff00cc);
+	border: 2px solid white;
 	box-shadow: 0 0 5px rgba(0,0,0,0.5);
 }
 .pin:hover {
@@ -136,7 +161,7 @@ div span {
     align-items: center;
 }
 
-.modal-content {
+.card {
 	background: aliceblue;
 	margin: 10% auto;
 	padding: 20px;
@@ -146,7 +171,7 @@ div span {
 	box-shadow: 0 0 15px rgba(0,0,0,0.5)
 }
 
-.modal-content img {
+.card img {
 	max-width: 100%;
 	border-radius: 5px;
 	margin-bottom: 10px;
@@ -162,4 +187,20 @@ div span {
 
 .close:hover {
 	color: red;
+}
+
+/*Botão de deletar impressora de dentro do modal*/
+
+#deletePrinterBtn {
+	background-color: red;
+	color: white;
+	border: none;
+	padding: 8px 12px;
+	border-radius: 5px;
+	cursor: pointer;
+	margin-top: 10px;
+}
+
+#deletePrinterBtn:hover {
+	background-color: red;
 }
