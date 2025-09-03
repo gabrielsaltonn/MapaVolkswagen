@@ -132,11 +132,15 @@ function adjustPins(scale) {
 renderPins();
 
 // Botão de deletar impressora dentro do modal
-document.getElementById("deletePrinterBtn").addEventListener("click", () => {
+function deletePrinter() {
     if (currentPrinterIndex !== null) {
         printers.splice(currentPrinterIndex, 1);
         renderPins();
         modal.style.display = 'none';
         currentPrinterIndex = null;
     }
-});
+}
+
+document.getElementById("deletePrinterSidebarBtn").addEventListener("click", deletePrinter);
+document.getElementById("deletePrinterModalBtn").addEventListener("click", deletePrinter);
+

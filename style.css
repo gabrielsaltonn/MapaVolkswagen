@@ -62,16 +62,20 @@ body {
 header {
     padding: 20px 0;
     margin-bottom: 30px;
+	background-color: azure;
+
 }
 
 header h1 {
-    margin-bottom: 15px;
-	color: aliceblue;
+	color: black;
 }
 
 div span {
-	color: aliceblue;
-
+	color: white;
+	border-radius: 10px;
+	background-color: #00fff533;
+	padding-block: 5px;
+	padding-inline: 5px;
 }
 
 /*Container do mapa*/
@@ -82,7 +86,7 @@ div span {
     max-width: 800px;
     margin: 20px auto;
     border: 2px blue;
-    border-radius: 10px;
+    border-radius: 20px;
     overflow: hidden;
     touch-action: none; /* evita conflitos no mobile */
 }
@@ -203,4 +207,10 @@ div span {
 
 #deletePrinterBtn:hover {
 	background-color: red;
+}
+
+.logo1 {
+	position: absolute;
+	top: 10px;
+	left: 0;
 }
