@@ -132,15 +132,15 @@ div span {
 
 .pin {
 	position: absolute;
-	width:1%;
-	height: 1%;
+	width:5px;
+	height: 5px;
 	background: red;
 	border-radius: 50%;
 	cursor: pointer;
 	pointer-events: auto;
 	transform: translate(-50%, -50%);
-	border: 2px solid white;
-	box-shadow: 0 0 5px rgba(0,0,0,0.5);
+	border: 0.3px solid white;
+	box-shadow: 0 0 1px rgba(0,0,0,0.5);
 }
 .pin:hover {
 	background-color: red;

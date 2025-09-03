@@ -73,9 +73,10 @@
     // Permitir zoom com a rodinha do mouse
     panzoomArea.parentElement.addEventListener('wheel', panzoomInstance.zoomWithWheel);
 
-    // Captura de coordenadas ao clicar na planta
-    panzoomArea.addEventListener('click', (e) => {
+    // Captura de coordenadas ao clicar DOIS cliques na planta
+    panzoomArea.addEventListener('dblclick', (e) => {
         if (!captureMode) return;
+
         const rect = panzoomArea.getBoundingClientRect();
         const x = ((e.clientX - rect.left) / rect.width) * 100;
         const y = ((e.clientY - rect.top) / rect.height) * 100;
@@ -98,9 +99,8 @@
     renderPins();
 
     //Botão de deletar impressora dentro do modal
-
     document.getElementById("deletePrinterBtn").addEventListener("click", function () {
         const printerId = currentPrinter.id; // Supondo que você tenha essa referência
         removePrinterFromMap(printerId);
         closePrinterModal();
-        });
+    });
