@@ -65,7 +65,7 @@ window.addEventListener('click', (e) => {
 toggleHelper.addEventListener('click', () => {
     captureMode = !captureMode;
     helper.style.display = captureMode ? 'block' : 'none';
-    toggleHelper.textContent = captureMode ? 'Clique na planta para capturar' : 'Capturar coordenadas';
+    toggleHelper.textContent = captureMode ? 'Clique na planta para capturar' : '➕ Adicionar impressora';
 });
 
 // ====== PANZOOM ======
@@ -131,7 +131,7 @@ function adjustPins(scale) {
 // Inicializar pins
 renderPins();
 
-// Botão de deletar impressora dentro do modal
+// Botão de deletar impressora dentro do modal e na sidebar
 function deletePrinter() {
     if (currentPrinterIndex !== null) {
         printers.splice(currentPrinterIndex, 1);
@@ -142,5 +142,4 @@ function deletePrinter() {
 }
 
 document.getElementById("deletePrinterSidebarBtn").addEventListener("click", deletePrinter);
-document.getElementById("deletePrinterModalBtn").addEventListener("click", deletePrinter);
-
+document.getElementById("deletePrinterBtn").addEventListener("click", deletePrinter);

@@ -1,8 +1,4 @@
-/* http://meyerweb.com/eric/tools/css/reset/
-   v2.0 | 20110126
-   License: none (public domain)
-*/
-
+/* Reset CSS */
 html, body, div, span, applet, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
 a, abbr, acronym, address, big, cite, code,
@@ -23,7 +19,6 @@ time, mark, audio, video {
 	font: inherit;
 	vertical-align: baseline;
 }
-/* HTML5 display-role reset for older browsers */
 article, aside, details, figcaption, figure,
 footer, header, hgroup, menu, nav, section {
 	display: block;
@@ -48,7 +43,6 @@ table {
 }
 
 /*Estilização geral*/
-
 body {
 	font-family: Arial, sans-serif;
 	margin: 0;
@@ -57,13 +51,11 @@ body {
 	background: linear-gradient(80deg, #2d1f77, #6b00b6, #ff00cc);
 }
 
-/*Sobre a cor da escrita*/
-
+/*Header*/
 header {
     padding: 20px 0;
     margin-bottom: 30px;
 	background-color: azure;
-
 }
 
 header h1 {
@@ -79,7 +71,6 @@ div span {
 }
 
 /*Container do mapa*/
-
 #mapWrap {
     position: relative;
     width: 90%;
@@ -88,7 +79,7 @@ div span {
     border: 2px blue;
     border-radius: 20px;
     overflow: hidden;
-    touch-action: none; /* evita conflitos no mobile */
+    touch-action: none;
 }
 
 #mapWrap img,
@@ -98,26 +89,24 @@ div span {
     display: block;
 }
 
-/*Sobre a imagem do mapa*/
-
+/*Imagem do mapa*/
 #floor {
-	width: 100%;   /* a imagem nunca passa do limite do contêiner */
-	height: auto;  /* mantém a proporção */
+	width: 100%;
+	height: auto;
 	display: block;
 	transform-origin: center center;
 	transition: transform 0.2s ease-in-out;
 }
 
-/*Sobre os PINS*/
-
+/*Pins*/
 #panzoom-area {
 	position: relative;
 	width: 100%;
 	height: auto;	
 }
 
-#panzoom-area .pins{
-	 position: absolute;
+#panzoom-area .pins {
+	position: absolute;
     top: 0;
     left: 0;
     width: 100%;
@@ -150,8 +139,7 @@ div span {
 	background-color: red;
 }
 
-/*Quadro de apresentação das impressoras adicionadas*/
-
+/*Modal*/
 .modal {
     display: none;
     position: fixed;
@@ -160,7 +148,7 @@ div span {
     top: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.6); /* escurece o fundo */
+    background-color: rgba(0, 0, 0, 0.6);
     justify-content: center;
     align-items: center;
 }
@@ -172,7 +160,7 @@ div span {
 	border-radius: 10px;
 	width: 300px;
 	text-align: left;
-	box-shadow: 0 0 15px rgba(0,0,0,0.5)
+	box-shadow: 0 0 15px rgba(0,0,0,0.5);
 }
 
 .card img {
@@ -193,8 +181,7 @@ div span {
 	color: red;
 }
 
-/*Botão de deletar impressora de dentro do modal*/
-
+/*Botão de deletar impressora*/
 #deletePrinterBtn {
 	background-color: red;
 	color: white;
@@ -206,7 +193,7 @@ div span {
 }
 
 #deletePrinterBtn:hover {
-	background-color: red;
+	background-color: darkred;
 }
 
 .logo1 {
