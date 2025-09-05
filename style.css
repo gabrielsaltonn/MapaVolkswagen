@@ -46,7 +46,9 @@ table {
 body {
 	font-family: Arial, sans-serif;
 	text-align: center;
-	background: linear-gradient(80deg, #2d1f77, #6b00b6, #ff00cc);
+	margin: 0;
+	height: 100vh;
+	background: linear-gradient(80deg, #27243a, #320e4d, #ce35af);
 }
 
 /*Header*/
@@ -99,7 +101,7 @@ header h1 {
 #mapWrap {
 	left: 0;
     position: relative;
-    width: 45%;
+    width: 40%;
 	border: 3px solid rgb(255, 105, 255);
 	margin: 2px solid rgb(255, 0, 43);
     border-radius: 20px;
@@ -264,5 +266,5 @@ header h1 {
 }
 
 .search:focus {
-    background-color: #1e1b4b;
+    background-color: #8f87fd;
 }
