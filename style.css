@@ -45,8 +45,6 @@ table {
 /*Estilização geral*/
 body {
 	font-family: Arial, sans-serif;
-	margin: 0;
-	padding: 0;
 	text-align: center;
 	background: linear-gradient(80deg, #2d1f77, #6b00b6, #ff00cc);
 }
@@ -54,35 +52,36 @@ body {
 /*Header*/
 header {
     padding: 10px 10px 10px 10px;
-	border-radius: 40px;
-	padding-bottom: 10px;
-	margin-bottom: 10px;
-	margin-left: 25%;
-	margin-right: 25%;
-	margin-bottom: 7%;
-	background-color: rgba(78, 95, 226, 0.603);
+	background-color: rgb(255, 255, 255);
 }
 
 header h1 {
+	font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     font-size: 1.8rem;
-    font-weight: 700;
-    color: #ffffff;
+    font-weight: 0;
     margin: 10px;
     text-align: center;
-    letter-spacing: 1px;
-    text-shadow: 0 1px 2px rgba(0,0,0,0.15);
+
+	background: linear-gradient(80deg, #2d1f77, #6b00b6, #ff00cc);
+  	-webkit-background-clip: text;
+  	background-clip: text;
+  	color: transparent;            /* necessário para a maioria dos browsers */
+  	-webkit-text-fill-color: transparent; /* necessário no Safari/Chrome */
+  	position: relative;
+
+	border: 1px solid rgb(255, 255, 255);
+	border-radius: 25px;
+	box-shadow: 0 4px 20px rgb(156, 139, 175);
+	background-color: rgba(255, 255, 255, 0.918);
+	margin: 0 20% 0 40%;
+	right: 16%;
 }
 
 /*logo*/
 .logo1 {
 	position: absolute;
-	top: 0.5%;
-	left: 3%;
-	border: 1px solid rgb(255, 255, 255);
-    padding: 5px 5px;
-    border-radius: 25px;
-	box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
-	background-color: rgba(255, 255, 255, 0.918);
+	top: 0;
+	left: 0;
 }
 
 /* Contêiner que junta mapa + botões */
@@ -101,7 +100,8 @@ header h1 {
 	left: 0;
     position: relative;
     width: 45%;
-    margin: 0;
+	border: 3px solid rgb(255, 105, 255);
+	margin: 2px solid rgb(255, 0, 43);
     border-radius: 20px;
     overflow: hidden;
     touch-action: none;

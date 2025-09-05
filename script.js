@@ -50,7 +50,7 @@ function renderPins() {
 // Alternar modo de adição de impressora
 toggleHelper.addEventListener('click', () => {
     captureMode = !captureMode;
-    toggleHelper.textContent = captureMode ? 'Cliqe no mapa 2x para adicionar.' : 'Adicionar impressora';
+    toggleHelper.textContent = captureMode ? 'Cliqe no mapa 2x para adicionar' : 'Adicionar impressora';
 });
 
 // Captura de posição após dois cliques
