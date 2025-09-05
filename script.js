@@ -18,6 +18,17 @@ const printers = [];
 let captureMode = false;
 let currentPrinterIndex = null;
 
+// ====== PANZOOM ======
+const panzoomArea = document.getElementById('panzoom-area');
+const panzoomInstance = Panzoom(panzoomArea, {
+    maxScale: 10,
+    minScale: 1,
+    contain: 'outside'
+});
+
+// Permitir zoom com a rodinha do mouse
+panzoomArea.parentElement.addEventListener('wheel', panzoomInstance.zoomWithWheel);
+
 // Função para criar pins
 function renderPins() {
     pinsDiv.innerHTML = '';
@@ -36,50 +47,14 @@ function renderPins() {
     adjustPins(currentScale);
 }
 
-// Mostrar modal com dados da impressora
-function showModal(printer, index) {
-    currentPrinterIndex = index;
-    mTitle.textContent = printer.title;
-    mDesc.textContent = printer.desc;
-    mModel.textContent = printer.model;
-    mSerial.textContent = printer.serial;
-    mLoc.textContent = printer.loc;
-    mNotes.textContent = printer.notes;
-    mImg.src = printer.img;
-    modal.style.display = 'flex';
-}
-
-// Fechar modal
-closeModal.addEventListener('click', () => {
-    modal.style.display = 'none';
-});
-
-// Fechar modal clicando fora
-window.addEventListener('click', (e) => {
-    if (e.target === modal) {
-        modal.style.display = 'none';
-    }
-});
-
-// Alternar modo de captura de coordenadas
+// Alternar modo de adição de impressora
 toggleHelper.addEventListener('click', () => {
     captureMode = !captureMode;
     helper.style.display = captureMode ? 'block' : 'none';
-    toggleHelper.textContent = captureMode ? 'Clique na planta para capturar' : '➕ Adicionar impressora';
+    toggleHelper.textContent = captureMode ? 'Cliqe no mapa 2x para adicionar.' : '➕ Adicionar impressora';
 });
 
-// ====== PANZOOM ======
-const panzoomArea = document.getElementById('panzoom-area');
-const panzoomInstance = Panzoom(panzoomArea, {
-    maxScale: 10,
-    minScale: 1,
-    contain: 'outside'
-});
-
-// Permitir zoom com a rodinha do mouse
-panzoomArea.parentElement.addEventListener('wheel', panzoomInstance.zoomWithWheel);
-
-// Captura de coordenadas ao clicar DOIS cliques na planta
+// Captura de posição após dois cliques
 panzoomArea.addEventListener('dblclick', (e) => {
     if (!captureMode) return;
 
@@ -130,6 +105,31 @@ function adjustPins(scale) {
 
 // Inicializar pins
 renderPins();
+
+// Mostrar modal com dados da impressora
+function showModal(printer, index) {
+    currentPrinterIndex = index;
+    mTitle.textContent = printer.title;
+    mDesc.textContent = printer.desc;
+    mModel.textContent = printer.model;
+    mSerial.textContent = printer.serial;
+    mLoc.textContent = printer.loc;
+    mNotes.textContent = printer.notes;
+    mImg.src = printer.img;
+    modal.style.display = 'flex';
+}
+
+// Fechar modal
+closeModal.addEventListener('click', () => {
+    modal.style.display = 'none';
+});
+
+// Fechar modal clicando fora
+window.addEventListener('click', (e) => {
+    if (e.target === modal) {
+        modal.style.display = 'none';
+    }
+});
 
 // Botão de deletar impressora dentro do modal e na sidebar
 function deletePrinter() {

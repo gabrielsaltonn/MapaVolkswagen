@@ -76,6 +76,24 @@ div span {
 	padding-inline: 5px;
 }
 
+/*logo*/
+.logo1 {
+	position: absolute;
+	top: 4px;
+	left: 0;
+}
+
+/* Contêiner que junta mapa + botões */
+.map-container {
+	display: flex;
+	justify-content: center;
+	align-items: flex-start;
+	gap: 15px;
+	margin: 20px auto;
+	width: fit-content;
+	max-width: 100%;
+}
+
 /*Container do mapa*/
 #mapWrap {
     position: relative;
@@ -202,24 +220,6 @@ div span {
 #deletePrinterBtn:hover {
 	background-color: darkred;
 }
-
-.logo1 {
-	position: absolute;
-	top: 4px;
-	left: 0;
-}
-
-/* Contêiner que junta mapa + botões */
-.map-container {
-	display: flex;
-	justify-content: center;
-	align-items: flex-start;
-	gap: 15px;
-	margin: 20px auto;
-	width: fit-content;
-	max-width: 100%;
-}
-
 
 /* Ajuste dos botões */
 .sidebar-buttons {
