@@ -11,20 +11,11 @@
     <header>
         <h1>Mapa de Impressoras</h1>
         <img id="logoSimpress" class="logo1" src="./logo/logo1.png" alt="logoSimpress">
-        <div class="actions">
-            <input id="search" class="search" type="search" placeholder="Filtrar por S/N, modelo, setor... " aria-label="Buscar impressora" />
-        </div>
     </header>
-        
-    <!--Dica-->
-    <div class="helper">
-        <span class="pill">
-            Dica: clique em 'Adicionar impressora' e dê dois cliques no mapa para adicioná-las!
-        </span>
-    </div>
 
     <!--Contêiner mapa + botões-->
     <div class="map-container">
+        
         <!-- Mapa -->
         <div class="map-wrap" id="mapWrap" aria-label="Planta do local com marcadores de impressoras">
             <div id="panzoom-area">
@@ -35,8 +26,9 @@
 
         <!-- Botões ao lado do mapa -->
         <div class="sidebar-buttons">
-            <button id="toggleHelper" type="button" title="Dê dois cliques no local para adicionar a impressora">➕ Adicionar impressora</button>
-            <button id="deletePrinterSidebarBtn" type="button">🗑 Excluir impressora</button>
+            <button id="toggleHelper" type="button" title="Dê dois cliques no local para adicionar a impressora">Adicionar impressora</button>
+            <button id="deletePrinterSidebarBtn" type="button">Excluir impressora</button>
+            <input id="search" class="search" type="search" placeholder="Filtrar por S/N, modelo, setor... " aria-label="Buscar impressora" />
         </div>
     </div>
 
@@ -54,7 +46,7 @@
                     <dt>Setor / Local</dt><dd id="mLoc"></dd>
                     <dt>Observações</dt><dd id="mNotes"></dd>
                 </dl>
-                <button id="deletePrinterBtn">🗑 Excluir Impressora</button>
+                <button id="deletePrinterBtn">Excluir Impressora</button>
             </div>
         </div>
     </div>
