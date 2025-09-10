@@ -25,68 +25,43 @@ footer, header, hgroup, menu, nav, section {
 }
 body {
 	line-height: 1;
-}
-ol, ul {
-	list-style: none;
-}
-blockquote, q {
-	quotes: none;
-}
-blockquote:before, blockquote:after,
-q:before, q:after {
-	content: '';
-	content: none;
-}
-table {
-	border-collapse: collapse;
-	border-spacing: 0;
-}
-
-/*Estilização geral*/
-body {
 	font-family: Arial, sans-serif;
 	text-align: center;
 	margin: 0;
 	height: 100vh;
 	background: linear-gradient(80deg, #27243a, #320e4d, #ce35af);
 }
+ol, ul { list-style: none; }
+table { border-collapse: collapse; border-spacing: 0; }
 
-/*Header*/
+/* Header */
 header {
-    padding: 10px 10px 10px 10px;
-	background-color: rgb(255, 255, 255);
+    padding: 10px;
+	background-color: #fff;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	gap: 15px;
+	flex-wrap: wrap;
 }
-
 header h1 {
 	font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-    font-size: 1.8rem;
-    font-weight: 0;
-    margin: 10px;
-    text-align: center;
-
+    font-size: 1.5rem;
 	background: linear-gradient(80deg, #2d1f77, #6b00b6, #ff00cc);
   	-webkit-background-clip: text;
   	background-clip: text;
-  	color: transparent;            /* necessário para a maioria dos browsers */
-  	-webkit-text-fill-color: transparent; /* necessário no Safari/Chrome */
-  	position: relative;
-
-	border: 1px solid rgb(255, 255, 255);
-	border-radius: 25px;
-	box-shadow: 0 4px 20px rgb(156, 139, 175);
-	background-color: rgba(255, 255, 255, 0.918);
-	margin: 0 20% 0 40%;
-	right: 16%;
+  	color: transparent;
+}
+#printerCounter {
+	font-size: 1rem;
+	color: #ffffff;
+	font-weight: bold;
 }
 
-/*logo*/
-.logo1 {
-	position: absolute;
-	top: 0;
-	left: 0;
-}
+/* Logo */
+.logo1 { position: absolute; top: 0; left: 0; }
 
-/* Contêiner que junta mapa + botões */
+/* Layout principal */
 .map-container {
 	display: flex;
 	justify-content: center;
@@ -97,60 +72,37 @@ header h1 {
 	max-width: 100%;
 }
 
-/*Container do mapa*/
+/* Mapa */
 #mapWrap {
-	left: 0;
-    position: relative;
+	position: relative;
     width: 40%;
 	border: 3px solid rgb(255, 105, 255);
-	margin: 2px solid rgb(255, 0, 43);
     border-radius: 20px;
     overflow: hidden;
-    touch-action: none;
 	background: white;
 	box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
 }
-
-#mapWrap img,
-#mapWrap .pins {
+#mapWrap img, #mapWrap .pins {
     width: 100%;
     height: auto;
     display: block;
 }
 
-/*Imagem do mapa*/
-#floor {
-	width: 100%;
-	height: auto;
-	display: block;
-	transform-origin: center center;
-	transition: transform 0.2s ease-in-out;
-}
-
-/*Pins*/
+/* Área dos pins */
 #panzoom-area {
 	position: relative;
 	width: 100%;
 	height: auto;	
 }
-
 #panzoom-area .pins {
 	position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    pointer-events: none;
 }
 
-.pins {
-	position: absolute;
-	top: 0;
-	left: 0;
-	width: 100%;
-	height: 100%;
-}
-
+/* Pin padrão */
 .pin {
 	position: absolute;
 	width: 10px;
@@ -163,82 +115,38 @@ header h1 {
 	border: 1px solid rgba(255, 86, 199, 0.185);
 	box-shadow: 0 0 10px rgba(0,0,0,0.5);
 }
-.pin:hover {
-	background-color: rgb(255, 0, 0);
+.pin:hover { background-color: rgb(255, 97, 247); }
+
+/* Pin selecionado */
+.selected-pin {
+    background-color: red !important;
+    border: 2px solid rgb(255, 0, 0);
 }
 
-/*Check box exclusão dos pins*/
-.pin-checkbox {
-	pointer-events: auto;
-	position: relative;
-	top: 15px;
-	left: 5px;
-	z-index: 1000;
-}
-
-/*Modal*/
+/* Modal */
 .modal {
     display: none;
     position: fixed;
     z-index: 1000;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
+    left: 0; top: 0;
+    width: 100%; height: 100%;
     background-color: rgba(0, 0, 0, 0.6);
     justify-content: center;
     align-items: center;
 }
-
 .card {
 	background: aliceblue;
-	margin: 10% auto;
-	padding: 110px 200px 100px 100px;
+	padding: 20px;
 	border-radius: 10px;
 	width: 300px;
 	text-align: left;
 	box-shadow: 0 0 15px rgba(0,0,0,0.5);
 }
+.card img { max-width: 100%; border-radius: 5px; margin-bottom: 10px; }
+.close { float: right; font-size: 20px; font-weight: bold; cursor: pointer; }
+.close:hover { color: red; }
 
-.card img {
-	max-width: 100%;
-	border-radius: 5px;
-	margin-bottom: 10px;
-}
-
-.close {
-	float: right;
-	font-size: 20px;
-	font-weight: bold;
-	cursor: pointer;
-	color: #333;
-	position: absolute;
-	border-radius: 6px;
-    right: 30%;
-    top: 0.5%;
-    background: red;
-}
-
-.close:hover {
-	color: red;
-}
-
-/*Botão de deletar impressora*/
-#deletePrinterBtn {
-	background-color: red;
-	color: white;
-	border: none;
-	padding: 8px 12px;
-	border-radius: 5px;
-	cursor: pointer;
-	margin-top: 10px;
-}
-
-#deletePrinterBtn:hover {
-	background-color: darkred;
-}
-
-/* Ajuste dos botões */
+/* Sidebar */
 .sidebar-buttons {
 	display: flex;
 	flex-direction: column;
@@ -246,8 +154,7 @@ header h1 {
 	align-self: flex-start;
 	padding-top: 25px;
 }
-
-.sidebar-buttons button {
+.sidebar-buttons button, .sidebar-buttons input {
     background-color: #1e1b4b;
     color: white;
     border: none;
@@ -255,29 +162,40 @@ header h1 {
     border-radius: 8px;
     cursor: pointer;
     font-size: 14px;
-    white-space: nowrap;
     transition: background 0.2s;
 }
+.sidebar-buttons button:hover { background-color: #312e81; }
+.search { background-color: #1e1b4b; }
+.search::placeholder { color: #fff; }
+.search:focus { background-color: #8f87fd; }
 
-.sidebar-buttons button:hover {
-    background-color: #312e81;
+.sidebar-counter {
+	display: flex;
+	flex-direction: column;
+	align-self: flex-start;
+	padding-top: 25px;
 }
 
-.search {
-    background-color: #1e1b4b;
-    border: none;
-    padding: 10px 15px;
-    border-radius: 8px;
-    cursor: pointer;
-    font-size: 14px;
-    white-space: nowrap;
-    transition: background 0.2s;
+/* ===== Responsividade ===== */
+@media (max-width: 768px) {
+    .map-container {
+        flex-direction: column;
+        align-items: center;
+    }
+    #mapWrap { width: 95%; }
+    .sidebar-buttons {
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+        padding-top: 15px;
+    }
+    .sidebar-buttons button, .sidebar-buttons input {
+        flex: 1 1 45%;
+        margin: 5px;
+    }
 }
-
-.search::placeholder {
-	color: #ffffff;
-}
-
-.search:focus {
-    background-color: #8f87fd;
+@media (max-width: 480px) {
+    header h1 { font-size: 1.2rem; }
+    #printerCounter { font-size: 0.9rem; }
+    .card { width: 90%; }
 }

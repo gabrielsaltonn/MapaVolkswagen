@@ -17,6 +17,11 @@
     <!--Contêiner mapa + botões-->
     <div class="map-container">
 
+        <!--Informações e contadores ao lado esquerdo do mapa-->
+        <div class="contadorImpressoras" id="contadorImpressoras" aria-label="Informativo da quantidade de impressoras adicionadas à planta">
+            <span id="printerCounter">0 Impressoras</span>
+        </div>
+
         <!-- Mapa -->
         <div class="map-wrap" id="mapWrap" aria-label="Planta do local com marcadores de impressoras">
             <div id="panzoom-area">
@@ -31,13 +36,8 @@
             <button id="deletePrinterSidebarBtn" type="button">Excluir Impressoras</button>
             <input id="search" class="search" type="search" placeholder="Filtrar por S/N, modelo, setor... " aria-label="Buscar impressora" />
         </div>
-
-        <!--Informações e contadores ao lado esquerdo do mapa-->
-        <div class="contadorImpressoras" id="contadorImpressoras" aria-label="Informativo da quantidade de impressoras adicionadas à planta">
-            <span id="printerCounter">0 Impressoras</span>
-        </div>
     </div>
-
+    
     <!-- Modal com informações da impressora -->
     <div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="mTitle" aria-describedby="mDesc">
         <button class="close" id="closemodal" aria-label="fechar">&times;</button>

@@ -36,13 +36,16 @@ function savePrinters() {
     localStorage.setItem("printers", JSON.stringify(printers));
 }
 
-//Atualizar contador
+// Atualizar contador
 function updateCounter() {
     const counterE1 = document.getElementById("printerCounter");
-    if (counterE1) {
+    if (printers.length === 1) {
+        counterE1.textContent = `${printers.length} impressora`;
+    } else {
         counterE1.textContent = `${printers.length} impressoras`;
     }
 }
+
 
 // Função para criar pins
 function renderPins(multiDeleteMode = false) {
