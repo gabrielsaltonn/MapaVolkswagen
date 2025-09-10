@@ -3,7 +3,6 @@ const mapWrap = document.getElementById('mapWrap');
 const floor = document.getElementById('floor');
 const pinsDiv = document.getElementById('pins');
 const toggleHelper = document.getElementById('toggleHelper');
-const helper = document.querySelector('.helper');
 const modal = document.getElementById('modal');
 const closeModal = document.getElementById('closemodal');
 const mTitle = document.getElementById('mTitle');
@@ -13,11 +12,9 @@ const mSerial = document.getElementById('mSerial');
 const mLoc = document.getElementById('mLoc');
 const mNotes = document.getElementById('mNotes');
 const mImg = document.getElementById('mImg');
-const printers = [];
 
-//Recuperar pins salvos
-
-let printer = JSON.parse(localStorage.getItem("printers")) || [];
+// Recuperar pins salvos ou iniciar vazio
+let printers = JSON.parse(localStorage.getItem("printers")) || [];
 
 let captureMode = false;
 let currentPrinterIndex = null;
@@ -34,13 +31,12 @@ const panzoomInstance = Panzoom(panzoomArea, {
 panzoomArea.parentElement.addEventListener('wheel', panzoomInstance.zoomWithWheel);
 
 //Salvar no localStorage
-function savePrinters(){
+function savePrinters() {
     localStorage.setItem("printers", JSON.stringify(printers));
 }
 
 //Atualizar contador
-
-function updateCounter(){
+function updateCounter() {
     const counterE1 = document.getElementById("printerCounter");
     if (counterE1) {
         counterE1.textContent = `${printers.length} impressoras`;
@@ -56,7 +52,7 @@ function renderPins(showCheckboxes = false) {
         wrapper.style.left = printer.x + '%';
         wrapper.style.top = printer.y + '%';
         wrapper.style.transform = "translate(-50%, -50%)";
-        
+
         const pin = document.createElement('div');
         pin.classList.add('pin');
         pin.title = printer.title;
@@ -70,17 +66,19 @@ function renderPins(showCheckboxes = false) {
             checkbox.dataset.index = index;
             wrapper.appendChild(checkbox);
         }
+
+        pinsDiv.appendChild(wrapper);
     });
 
-    // Ajusta imediatamente para o zoom atual
     const currentScale = panzoomInstance.getScale();
     adjustPins(currentScale);
+    updateCounter();
 }
 
 // Alternar modo de adição de impressora
 toggleHelper.addEventListener('click', () => {
     captureMode = !captureMode;
-    toggleHelper.textContent = captureMode ? 'Cliqe no mapa 2x para adicionar' : 'Adicionar impressora';
+    toggleHelper.textContent = captureMode ? 'Clique no mapa 2x para adicionar' : 'Adicionar impressora';
 });
 
 // Adicionar impressoras após dois cliques
@@ -99,9 +97,9 @@ panzoomArea.addEventListener('dblclick', (e) => {
         loc: "Novo setor",
         notes: "Sem observações",
         img: "./img/printer.png",
-        x: x,
-        y: y
+        x, y
     });
+    savePrinters();
     renderPins();
 });
 
@@ -132,9 +130,6 @@ function adjustPins(scale) {
     });
 }
 
-// Inicializar pins
-renderPins();
-
 // Mostrar modal com dados da impressora
 function showModal(printer, index) {
     currentPrinterIndex = index;
@@ -160,15 +155,41 @@ window.addEventListener('click', (e) => {
     }
 });
 
-// Botão de deletar impressora dentro do modal e na sidebar
+// Botão de deletar impressora dentro do modal
 function deletePrinter() {
     if (currentPrinterIndex !== null) {
         printers.splice(currentPrinterIndex, 1);
+        savePrinters();
         renderPins();
         modal.style.display = 'none';
         currentPrinterIndex = null;
     }
 }
 
-document.getElementById("deletePrinterSidebarBtn").addEventListener("click", deletePrinter);
+//Excluir várias impressoras
+function enableMultiDelete() {
+    renderPins(true);
+
+    const confirmBtn = document.createElement("button");
+    confirmBtn.textContent = "Confirmar exclusão";
+    confirmBtn.style.background = "red";
+    confirmBtn.style.color = "white";
+    confirmBtn.style.marginTop = "10px";
+    document.querySelector(".sidebar-buttons").appendChild(confirmBtn);
+
+    confirmBtn.addEventListener("click", () => {
+        const checked = document.querySelectorAll(".pin-checkbox:checked");
+        const indexes = [...checked].map(cb => parseInt(cb.dataset.index));
+        printers = printers.filter((_, i) => !indexes.includes(i));
+        savePrinters();
+        renderPins();
+        confirmBtn.remove();
+    }, { once: true });
+}
+
+// Eventos de exclusão
+document.getElementById("deletePrinterSidebarBtn").addEventListener("click", enableMultiDelete);
 document.getElementById("deletePrinterBtn").addEventListener("click", deletePrinter);
+
+// Inicializar pins
+renderPins();
