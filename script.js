@@ -12,6 +12,7 @@ const mSerial = document.getElementById('mSerial');
 const mLoc = document.getElementById('mLoc');
 const mNotes = document.getElementById('mNotes');
 const mImg = document.getElementById('mImg');
+const deletePrinterSidebarBtn = document.getElementById('deletePrinterSidebarBtn');
 
 // Recuperar pins salvos ou iniciar vazio
 let printers = JSON.parse(localStorage.getItem("printers")) || [];
@@ -97,6 +98,12 @@ toggleHelper.addEventListener('click', () => {
     toggleHelper.textContent = captureMode ? 'Clique no mapa 2x para adicionar' : 'Adicionar impressora';
 });
 
+// Alternar modo de exclusão de impressora
+deletePrinterSidebarBtn.addEventListener('click', () => {
+    captureMode = !captureMode;
+    deletePrinterSidebarBtn.textContent = captureMode ? 'Clique no pin para deletar' : 'Excluir Impressoras';
+})
+
 // Adicionar impressoras após dois cliques
 panzoomArea.addEventListener('dblclick', (e) => {
     if (!captureMode) return;
@@ -180,6 +187,7 @@ function deletePrinter() {
         modal.style.display = 'none';
         currentPrinterIndex = null;
     }
+    deletePrinter.style.backgroundColor = 'red';
 }
 
 //Excluir várias impressoras
@@ -205,7 +213,7 @@ function enableMultiDelete() {
     const cancelBtn = document.createElement("button");
     cancelBtn.id = "cancelDeleteBtn";
     cancelBtn.textContent = "Cancelar exclusão";
-    cancelBtn.style.background = "gray";
+    cancelBtn.style.background = "red";
     cancelBtn.style.color = "white";
     cancelBtn.style.marginTop = "5px";
     sidebar.appendChild(cancelBtn);

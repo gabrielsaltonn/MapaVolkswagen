@@ -142,9 +142,21 @@ header h1 {
 	text-align: left;
 	box-shadow: 0 0 15px rgba(0,0,0,0.5);
 }
-.card img { max-width: 100%; border-radius: 5px; margin-bottom: 10px; }
-.close { float: right; font-size: 20px; font-weight: bold; cursor: pointer; }
-.close:hover { color: red; }
+.card img { 
+	max-width: 100%; 
+	border-radius: 5px; 
+	margin-bottom: 10px; 
+}
+.close { 
+	border-radius: 10px;
+	background-color: red; 
+	right; font-size: 20px; 
+	font-weight: bold; 
+	cursor: pointer; 
+}
+.close:hover { 
+	color: rgb(255, 255, 255); 
+}
 
 /* Sidebar */
 .sidebar-buttons {
