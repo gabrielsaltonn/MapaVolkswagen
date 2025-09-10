@@ -154,18 +154,18 @@ header h1 {
 
 .pin {
 	position: absolute;
-	width: 15px;
-	height: 15px;
-	background: red;
+	width: 10px;
+	height: 10px;
+	background: rgb(153, 0, 255);
 	border-radius: 50%;
 	cursor: pointer;
 	pointer-events: auto;
 	transform: translate(-50%, -50%);
-	border: 3px solid white;
-	box-shadow: 0 0 1px rgba(0,0,0,0.5);
+	border: 1px solid rgba(255, 86, 199, 0.185);
+	box-shadow: 0 0 10px rgba(0,0,0,0.5);
 }
 .pin:hover {
-	background-color: red;
+	background-color: rgb(255, 0, 0);
 }
 
 /*Modal*/

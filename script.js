@@ -15,6 +15,10 @@ const mNotes = document.getElementById('mNotes');
 const mImg = document.getElementById('mImg');
 const printers = [];
 
+//Recuperar pins salvos
+
+let printer = JSON.parse(localStorage.getItem("printers")) || [];
+
 let captureMode = false;
 let currentPrinterIndex = null;
 
@@ -29,17 +33,43 @@ const panzoomInstance = Panzoom(panzoomArea, {
 // Permitir zoom com a rodinha do mouse
 panzoomArea.parentElement.addEventListener('wheel', panzoomInstance.zoomWithWheel);
 
+//Salvar no localStorage
+function savePrinters(){
+    localStorage.setItem("printers", JSON.stringify(printers));
+}
+
+//Atualizar contador
+
+function updateCounter(){
+    const counterE1 = document.getElementById("printerCounter");
+    if (counterE1) {
+        counterE1.textContent = `${printers.length} impressoras`;
+    }
+}
+
 // Função para criar pins
-function renderPins() {
+function renderPins(showCheckboxes = false) {
     pinsDiv.innerHTML = '';
     printers.forEach((printer, index) => {
+        const wrapper = document.createElement('div');
+        wrapper.style.position = "absolute";
+        wrapper.style.left = printer.x + '%';
+        wrapper.style.top = printer.y + '%';
+        wrapper.style.transform = "translate(-50%, -50%)";
+        
         const pin = document.createElement('div');
         pin.classList.add('pin');
-        pin.style.left = printer.x + '%';
-        pin.style.top = printer.y + '%';
         pin.title = printer.title;
         pin.addEventListener('click', () => showModal(printer, index));
-        pinsDiv.appendChild(pin);
+        wrapper.appendChild(pin);
+
+        if (showCheckboxes) {
+            const checkbox = document.createElement("input");
+            checkbox.type = "checkbox";
+            checkbox.classList.add("pin-checkbox");
+            checkbox.dataset.index = index;
+            wrapper.appendChild(checkbox);
+        }
     });
 
     // Ajusta imediatamente para o zoom atual
@@ -53,7 +83,7 @@ toggleHelper.addEventListener('click', () => {
     toggleHelper.textContent = captureMode ? 'Cliqe no mapa 2x para adicionar' : 'Adicionar impressora';
 });
 
-// Captura de posição após dois cliques
+// Adicionar impressoras após dois cliques
 panzoomArea.addEventListener('dblclick', (e) => {
     if (!captureMode) return;
 
@@ -85,7 +115,7 @@ function adjustPins(scale) {
     const pins = document.querySelectorAll('.pin');
 
     const minSize = 1;
-    const maxSize = 15;
+    const maxSize = 10;
     const minBorder = 0;
     const maxBorder = 5;
 

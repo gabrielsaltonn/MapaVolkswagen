@@ -25,11 +25,16 @@
             </div>
         </div>
 
-        <!-- Botões ao lado do mapa -->
+        <!-- Botões ao lado direito do mapa -->
         <div class="sidebar-buttons">
-            <button id="toggleHelper" type="button" title="Dê dois cliques no local para adicionar a impressora">Adicionar impressora</button>
-            <button id="deletePrinterSidebarBtn" type="button">Excluir impressora</button>
+            <button id="toggleHelper" type="button" title="Dê dois cliques no local para adicionar a impressora">Adicionar impressoras</button>
+            <button id="deletePrinterSidebarBtn" type="button">Excluir Impressoras</button>
             <input id="search" class="search" type="search" placeholder="Filtrar por S/N, modelo, setor... " aria-label="Buscar impressora" />
+        </div>
+
+        <!--Informações e contadores ao lado esquerdo do mapa-->
+        <div class="contadorImpressoras" id="contadorImpressoras" aria-label="Informativo da quantidade de impressoras adicionadas à planta">
+            <span id="printerCounter">0 Impressoras</span>
         </div>
     </div>
 
