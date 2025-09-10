@@ -18,6 +18,7 @@ let printers = JSON.parse(localStorage.getItem("printers")) || [];
 
 let captureMode = false;
 let currentPrinterIndex = null;
+let selectedPins = new Set(); // guarda índices selecionados
 
 // ====== PANZOOM ======
 const panzoomArea = document.getElementById('panzoom-area');
@@ -44,7 +45,7 @@ function updateCounter() {
 }
 
 // Função para criar pins
-function renderPins(showCheckboxes = false) {
+function renderPins(multiDeleteMode = false) {
     pinsDiv.innerHTML = '';
     printers.forEach((printer, index) => {
         const wrapper = document.createElement('div');
@@ -56,17 +57,29 @@ function renderPins(showCheckboxes = false) {
         const pin = document.createElement('div');
         pin.classList.add('pin');
         pin.title = printer.title;
-        pin.addEventListener('click', () => showModal(printer, index));
-        wrapper.appendChild(pin);
 
-        if (showCheckboxes) {
-            const checkbox = document.createElement("input");
-            checkbox.type = "checkbox";
-            checkbox.classList.add("pin-checkbox");
-            checkbox.dataset.index = index;
-            wrapper.appendChild(checkbox);
+        if (multiDeleteMode) {
+            // Clique no pin ativa/desativa seleção
+            pin.addEventListener('click', () => {
+                if (selectedPins.has(index)) {
+                    selectedPins.delete(index);
+                    pin.classList.remove("selected-pin");
+                } else {
+                    selectedPins.add(index);
+                    pin.classList.add("selected-pin");
+                }
+            });
+        } else {
+            // Clique normal abre modal
+            pin.addEventListener('click', () => showModal(printer, index));
         }
 
+        // destacar pin já selecionado
+        if (selectedPins.has(index)) {
+            pin.classList.add("selected-pin");
+        }
+
+        wrapper.appendChild(pin);
         pinsDiv.appendChild(wrapper);
     });
 
@@ -168,23 +181,47 @@ function deletePrinter() {
 
 //Excluir várias impressoras
 function enableMultiDelete() {
+    selectedPins.clear(); // começa vazio
     renderPins(true);
 
+    const sidebar = document.querySelector(".sidebar-buttons");
+
+    // Evitar criar vários botões
+    if (document.getElementById("confirmDeleteBtn")) return;
+
+    // Botão confirmar
     const confirmBtn = document.createElement("button");
+    confirmBtn.id = "confirmDeleteBtn";
     confirmBtn.textContent = "Confirmar exclusão";
     confirmBtn.style.background = "red";
     confirmBtn.style.color = "white";
     confirmBtn.style.marginTop = "10px";
-    document.querySelector(".sidebar-buttons").appendChild(confirmBtn);
+    sidebar.appendChild(confirmBtn);
+
+    // Botão cancelar
+    const cancelBtn = document.createElement("button");
+    cancelBtn.id = "cancelDeleteBtn";
+    cancelBtn.textContent = "Cancelar exclusão";
+    cancelBtn.style.background = "gray";
+    cancelBtn.style.color = "white";
+    cancelBtn.style.marginTop = "5px";
+    sidebar.appendChild(cancelBtn);
 
     confirmBtn.addEventListener("click", () => {
-        const checked = document.querySelectorAll(".pin-checkbox:checked");
-        const indexes = [...checked].map(cb => parseInt(cb.dataset.index));
-        printers = printers.filter((_, i) => !indexes.includes(i));
+        printers = printers.filter((_, i) => !selectedPins.has(i));
         savePrinters();
+        selectedPins.clear();
         renderPins();
         confirmBtn.remove();
-    }, { once: true });
+        cancelBtn.remove();
+    });
+
+    cancelBtn.addEventListener("click", () => {
+        selectedPins.clear();
+        renderPins(); // volta ao normal sem excluir
+        confirmBtn.remove();
+        cancelBtn.remove();
+    });
 }
 
 // Eventos de exclusão
