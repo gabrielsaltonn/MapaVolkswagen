@@ -187,7 +187,6 @@ function deletePrinter() {
         modal.style.display = 'none';
         currentPrinterIndex = null;
     }
-    deletePrinter.style.backgroundColor = 'red';
 }
 
 //Excluir várias impressoras

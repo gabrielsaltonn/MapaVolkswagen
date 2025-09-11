@@ -150,7 +150,8 @@ header h1 {
 .close { 
 	border-radius: 10px;
 	background-color: red; 
-	right; font-size: 20px; 
+	right: 100px; 
+	font-size: 20px; 
 	font-weight: bold; 
 	cursor: pointer; 
 }
