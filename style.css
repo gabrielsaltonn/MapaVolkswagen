@@ -40,7 +40,7 @@ table {
 
 /* Header */
 header {
-    padding: 10px;
+    padding: 12px;
 	background-color: #fff;
 	display: flex;
 	justify-content: center;
@@ -171,7 +171,95 @@ header h1 {
 }
 
 /*Fotos*/
-.
+.seçãoDeFotos {
+	text-align: center;
+	margin-bottom: 15px;
+}
+
+.efeitoCarrossel {
+	position: relative;
+	display: inline-block;
+}
+
+.efeitoCarrossel img {
+	max-width: 250px;
+	border-radius: 10px;
+}
+
+.mFoto {
+	position: absolute;
+	top: 50%;
+	transform: translateY(-50%);
+	background: rgba(0, 0, 0, 0.3);
+	color: white;
+	border: none;
+	font-size: 20px;
+	cursor: pointer;
+	padding: 5px;
+	border-radius: 50%;
+}
+
+.mFoto.Esquerda {
+	left: -30px;
+}
+
+.mFoto.Direita {
+	right: -30px;
+}
+
+.actFotos button {
+	margin: 5px;
+	padding: 8px 12px;
+	border: none;
+	border-radius: 6px;
+	cursor: pointer;
+	background: #1e1b4b;
+	color: white;
+}
+
+.actFotos button:hover {
+	background: #312e81;
+}
+
+/*Formulário do modal*/
+
+#infoPrinters {
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+}
+
+#infoPrinters label {
+	display: flex; flex-direction: column;
+	font-size: 14px;
+}
+
+#infoPrinters input, #infoPrinters textarea {
+	padding: 5px;
+	border: 1px solid white;
+	border-radius: 6px;
+}
+
+#salvarImpressora {
+	background-color: #1e1b4b;
+	color: white;
+	border: none;
+	padding: 10px;
+	border-radius: 8px;
+	margin-top: 10px;
+	cursor: pointer;
+} #salvarImpressora:hover {
+	background-color: #312e81;
+}
+
+.checkBkp {
+	display: flex;
+	align-items: center;
+	gap: 5px;
+	margin: 10px 0;
+} #checkBkp input:checked {
+	accent-color: #00ff95;
+}
 
 /* Sidebar */
 .sidebar-buttons {

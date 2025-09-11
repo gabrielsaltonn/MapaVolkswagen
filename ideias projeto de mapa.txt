@@ -1,4 +1,0 @@
-Ideias para o projeto do mapa interativo:
-
-Adicionar no modal um checkbox para se é um equipamento BCK ou não.
-Adicionar possibilidade de alteração de informações das impressoras.
