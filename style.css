@@ -31,8 +31,12 @@ body {
 	height: 100vh;
 	background: linear-gradient(80deg, #27243a, #320e4d, #ce35af);
 }
-ol, ul { list-style: none; }
-table { border-collapse: collapse; border-spacing: 0; }
+ol, ul { 
+	list-style: none; 
+}
+table { 
+	border-collapse: collapse; border-spacing: 0; 
+}
 
 /* Header */
 header {
@@ -58,8 +62,16 @@ header h1 {
 	font-weight: bold;
 }
 
+#bkpCounter {
+	font-size: 1rem;
+	color: #00ff95;
+	font-weight: bold;
+}
+
 /* Logo */
-.logo1 { position: absolute; top: 0; left: 0; }
+.logo1 { 
+	position: absolute; top: 0; left: 0; 
+}
 
 /* Layout principal */
 .map-container {
@@ -115,7 +127,9 @@ header h1 {
 	border: 1px solid rgba(255, 86, 199, 0.185);
 	box-shadow: 0 0 10px rgba(0,0,0,0.5);
 }
-.pin:hover { background-color: rgb(255, 97, 247); }
+.pin:hover { 
+	background-color: rgb(255, 97, 247); 
+}
 
 /* Pin selecionado */
 .selected-pin {
@@ -142,11 +156,7 @@ header h1 {
 	text-align: left;
 	box-shadow: 0 0 15px rgba(0,0,0,0.5);
 }
-.card img { 
-	max-width: 100%; 
-	border-radius: 5px; 
-	margin-bottom: 10px; 
-}
+
 .close { 
 	border-radius: 10px;
 	background-color: red; 
@@ -155,9 +165,13 @@ header h1 {
 	font-weight: bold; 
 	cursor: pointer; 
 }
+
 .close:hover { 
 	color: rgb(255, 255, 255); 
 }
+
+/*Fotos*/
+.
 
 /* Sidebar */
 .sidebar-buttons {

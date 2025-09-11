@@ -20,6 +20,7 @@
         <!--Informações e contadores ao lado esquerdo do mapa-->
         <div class="contadorImpressoras" id="contadorImpressoras" aria-label="Informativo da quantidade de impressoras adicionadas à planta">
             <span id="printerCounter">0 Impressoras</span>
+            <span id="bkpCounter"> | 0 Backups ativos</span>
         </div>
 
         <!-- Mapa -->
@@ -65,8 +66,18 @@
                 <label>Setor/Andar:<input type="text" id="mLocal"></label>
                 <label>Coluna:<input type="text" id="mCol"></label>
                 <label>Observações:<textarea id="mNotes"></textarea></label>
+
+                <!-- Checkbox Backup-->
+                 <label class="checkBkp">
+                    <input type="checkbox" id="mBckp"> Equipamento Backup?>
+                 </label>
+
+                 <button type="submit" id="salvarImpressora">Salvar</button>
             </form>
 
+            <button id="deletePrinterBtn"> Excluir Impressora</button>
+        </div>
+    </div>
 
     <!-- Scripts -->
     <script src="https://unpkg.com/@panzoom/panzoom/dist/panzoom.min.js"></script>
