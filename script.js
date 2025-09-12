@@ -195,12 +195,12 @@ panzoomArea.addEventListener('dblclick', (e) => {
     const x = ((e.clientX - rect.left) / rect.width) * 100;
     const y = ((e.clientY - rect.top) / rect.height) * 100;
     printers.push({
-        model: "Modelo X",
-        serial: "000000",
+        model: "",
+        serial: "",
         ip: "",
-        loc: "Novo setor",
+        loc: "",
         col: "",
-        notes: "Sem observações",
+        notes: "Sem observações.",
         backup: false,
         photos: ["./img/printer.png"],
         x, y

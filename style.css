@@ -87,7 +87,7 @@ header h1 {
 /* Mapa */
 #mapWrap {
     position: relative;
-    width: 40%;
+    width: 50%;
     border: 3px solid rgb(255, 105, 255);
     border-radius: 20px;
     overflow: hidden;
