@@ -13,16 +13,16 @@
         <h1>Mapa de Impressoras</h1>
         <img id="logoSimpress" class="logo1" src="./logo/logo1.png" alt="logoSimpress">
     </header>
-
+ 
     <!--Contêiner mapa + botões-->
     <div class="map-container">
-
+ 
         <!--Informações e contadores ao lado esquerdo do mapa-->
         <div class="contadorImpressoras" id="contadorImpressoras" aria-label="Informativo da quantidade de impressoras adicionadas à planta">
             <span id="printerCounter">0 Impressoras</span>
             <span id="bkpCounter"> | 0 Backups ativos</span>
         </div>
-
+ 
         <!-- Mapa -->
         <div class="map-wrap" id="mapWrap" aria-label="Planta do local com marcadores de impressoras">
             <div id="panzoom-area">
@@ -30,7 +30,7 @@
                 <div class="pins" id="pins"></div>
             </div>
         </div>
-
+ 
         <!-- Botões ao lado direito do mapa -->
         <div class="sidebar-buttons">
             <button id="toggleHelper" type="button" title="Dê dois cliques no local para adicionar a impressora">Adicionar impressoras</button>
@@ -38,12 +38,12 @@
             <input id="search" class="search" type="search" placeholder="Filtrar por S/N, modelo, setor... " aria-label="Buscar impressora" />
         </div>
     </div>
-    
+   
     <!-- Modal com informações da impressora -->
     <div class="modal" id="modal" role="dialog" aria-modal="true">
         <div class="card">
             <button class="close" id="closemodal" aria-label="fechar">&times;</button>
-
+ 
             <!--Adicionar fotos-->
             <div class="seçãoDeFotos">
                 <div class="efeitoCarrossel">
@@ -57,7 +57,7 @@
                     <button id="removerFoto">Remover Foto</button>
                 </div>
             </div>
-
+ 
             <!--Formulário-->
             <form id="infoPrinters">
                 <label>Modelo:<input type="text" id="mModel"></label>
@@ -66,21 +66,23 @@
                 <label>Setor/Andar:<input type="text" id="mLocal"></label>
                 <label>Coluna:<input type="text" id="mCol"></label>
                 <label>Observações:<textarea id="mNotes"></textarea></label>
-
+ 
                 <!-- Checkbox Backup-->
                  <label class="checkBkp">
-                    <input type="checkbox" id="mBckp"> Equipamento Backup?>
+                    <input type="checkbox" id="mBckp"> Equipamento Backup? </input>
                  </label>
-
+ 
                  <button type="submit" id="salvarImpressora">Salvar</button>
             </form>
-
+ 
             <button id="deletePrinterBtn"> Excluir Impressora</button>
         </div>
     </div>
-
+ 
     <!-- Scripts -->
     <script src="https://unpkg.com/@panzoom/panzoom/dist/panzoom.min.js"></script>
     <script src="script.js"></script>
 </body>
 </html>
+ 
+ 
