@@ -215,7 +215,7 @@ panzoomArea.addEventListener('panzoomchange', (e) => adjustPins(e.detail.scale))
 // Alternar modo de captura
 toggleHelper.addEventListener('click', () => {
     captureMode = !captureMode;
-    toggleHelper.textContent = captureMode ? 'Clique no mapa 2x para adicionar' : 'Adicionar impressoras';
+    toggleHelper.textContent = captureMode ? 'Clique no mapa 2x para adicionar\nou clique aqui para cancelar' : 'Adicionar impressoras';
 });
  
 // Excluir impressora individual

@@ -278,11 +278,25 @@ header h1 {
     cursor: pointer;
     font-size: 14px;
     transition: background 0.2s;
+	text-align: center;
 }
-.sidebar-buttons button:hover { background-color: #312e81; }
-.search { background-color: #1e1b4b; }
-.search::placeholder { color: #fff; }
-.search:focus { background-color: #8f87fd; }
+.sidebar-buttons button:hover { 
+	background-color: #312e81; 
+}
+
+.search { 
+	background-color: #1e1b4b; 
+}
+.search::placeholder { 
+	color: #fff; 
+}
+.search:focus { 
+	background-color: #8f87fd; 
+}
+
+#toggleHelper {
+	white-space: pre-line;
+}
  
 .sidebar-counter {
     display: flex;
