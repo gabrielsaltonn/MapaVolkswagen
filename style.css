@@ -144,17 +144,17 @@ header h1 {
     z-index: 1000;
     left: 0; top: 0;
     width: 100%; height: 100%;
-    background-color: rgba(0, 0, 0, 0.6);
+    background-color: rgba(0, 0, 0, 0.829);
     justify-content: center;
     align-items: center;
 }
 .card {
-    background: rgba(207, 202, 253, 0.76);
+    background-color: #c796ff;
     padding: 20px;
     border-radius: 10px;
     width: 300px;
     text-align: left;
-    box-shadow: 0 0 15px rgb(0, 0, 0);
+    box-shadow: 0 0 15px rgb(255, 0, 242);
 }
  
 .close {
