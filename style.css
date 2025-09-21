@@ -33,7 +33,7 @@ body {
     text-align: center;
     margin: 0;
     height: 100vh;
-    background: linear-gradient(80deg, #261c68, #20112c, #324f57);
+    background: linear-gradient(80deg, #1a223d, #0e725c, #217e97);
 }
  
 ol, ul {
@@ -66,7 +66,7 @@ header h1 {
  
 /* Logo */
 .logo1 {
-    position: absolute; top: 0; left: 0;
+    position: absolute; top: 0; left: 2%;
 }
  
 /* Layout principal */
@@ -74,7 +74,7 @@ header h1 {
     display: flex;
     justify-content: center;
     align-items: flex-start;
-    gap: 15px;
+    gap: 30px;
     margin: 20px auto;
     width: fit-content;
     max-width: 100%;
@@ -83,12 +83,12 @@ header h1 {
 /* Mapa */
 #mapWrap {
     position: relative;
+    right: 17%;
     width: 50%;
-    border: 5px  rgb(255, 255, 255);
+    border: 5px rgb(0, 255, 179);
     border-radius: 20px;
-    overflow: hidden;
-    background: rgb(0, 118, 92);
-    box-shadow: 0 4px 20px rgb(0, 0, 0);
+    background: white;
+    box-shadow: 4px 4px 20px 4px rgb(0, 0, 0);
 }
 #mapWrap img, #mapWrap .pins {
     width: 100%;
@@ -156,11 +156,12 @@ header h1 {
  
 .close {
     position: relative;
-    left: 45%;
+    left: 47%;
+    top: 40%;
     color: White;
     background-color: #1e1b4b;  
     border-radius: 5px;
-    font-size: 20px;
+    font-size: 15px;
     font-weight: bold;
     cursor: pointer;
 }
@@ -280,11 +281,13 @@ header h1 {
  
 /* Sidebar */
 .sidebar-buttons {
+    position: relative;
+    right: 15%;
     display: flex;
     flex-direction: column;
     gap: 10px;
     align-self: flex-start;
-    padding-top: 25px;
+    padding-top: 5px;
 }
  
 .sidebar-buttons button, .sidebar-buttons input {

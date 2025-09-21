@@ -13,6 +13,7 @@
     <header>
         <h1>Mapa de Impressoras</h1>
         <img id="logoSimpress" class="logo1" src="./logo/logo1.png" alt="logoSimpress">
+        <input id="search" class="search" type="search" placeholder="Filtrar por S/N, modelo, setor... " aria-label="Buscar impressora" />
     </header>
  
     <!--Contêiner mapa, botões e contadores-->
@@ -26,15 +27,13 @@
  
         <!-- Botões ao lado direito do mapa -->
         <div class="sidebar-buttons">
-            <input id="search" class="search" type="search" placeholder="Filtrar por S/N, modelo, setor... " aria-label="Buscar impressora" />
+            <div class="contadorImpressoras" id="contadorImpressoras" aria-label="Informativo da quantidade de impressoras adicionadas à planta">
+                <span id="printerCounter">0 Impressoras</span>
+                 <span id="bkpCounter"> | 0 Backups ativos</span>
+            </div>
             <button id="toggleHelper" type="button" title="Dê dois cliques no local para adicionar a impressora">Adicionar impressoras</button>
             <button id="deletePrinterSidebarBtn" type="button">Excluir Impressoras</button>
         </div>
-    </div>
- 
-    <div class="contadorImpressoras" id="contadorImpressoras" aria-label="Informativo da quantidade de impressoras adicionadas à planta">
-        <span id="printerCounter">0 Impressoras</span>
-        <span id="bkpCounter"> | 0 Backups ativos</span>
     </div>
    
     <!-- Modal com informações da impressora -->
@@ -58,12 +57,12 @@
  
             <!--Formulário-->
             <form id="infoPrinters">
-                <label><input type="text" id="mModel"></label>
-                <label><input type="text" id="mSerial"></label>
-                <label><input type="text" id="mIP"></label>
-                <label><input type="text" id="mLocal"></label>
-                <label><input type="text" id="mCol"></label>
-                <label><textarea id="mNotes"></textarea></label>
+                <label>Modelo:<input type="text" id="mModel"></label>
+                <label>S/N:<input type="text" id="mSerial"></label>
+                <label>IP:<input type="text" id="mIP"></label>
+                <label>Setor/Andar:<input type="text" id="mLocal"></label>
+                <label>Coluna:<input type="text" id="mCol"></label>
+                <label>Observações:<textarea id="mNotes"></textarea></label>
  
                 <!-- Checkbox Backup-->
                  <label class="checkBkp">
