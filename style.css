@@ -23,17 +23,23 @@ article, aside, details, figcaption, figure,
 footer, header, hgroup, menu, nav, section {
     display: block;
 }
+/*/~/~/~/~/~/~/~/~/~/~/~/~/~/~/~/~/~/~/~/~/~/~/~/~/~/~/~/~/~/~/~/~/~/~/~/~/~/~/~/*/
+ 
+ 
+/*body*/
 body {
     line-height: 1;
     font-family: Arial, sans-serif;
     text-align: center;
     margin: 0;
     height: 100vh;
-    background: linear-gradient(80deg, #27243a, #320e4d, #ce35af);
+    background: linear-gradient(80deg, #261c68, #20112c, #324f57);
 }
+ 
 ol, ul {
     list-style: none;
 }
+ 
 table {
     border-collapse: collapse; border-spacing: 0;
 }
@@ -41,13 +47,14 @@ table {
 /* Header */
 header {
     padding: 12px;
-    background-color: #fff;
+    background-color: white;
     display: flex;
     justify-content: center;
     align-items: center;
     gap: 15px;
     flex-wrap: wrap;
 }
+ 
 header h1 {
     font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     font-size: 1.5rem;
@@ -55,17 +62,6 @@ header h1 {
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
-}
-#printerCounter {
-    font-size: 1rem;
-    color: #ffffff;
-    font-weight: bold;
-}
- 
-#bkpCounter {
-    font-size: 1rem;
-    color: #00ff95;
-    font-weight: bold;
 }
  
 /* Logo */
@@ -88,11 +84,11 @@ header h1 {
 #mapWrap {
     position: relative;
     width: 50%;
-    border: 3px solid rgb(255, 105, 255);
+    border: 5px  rgb(255, 255, 255);
     border-radius: 20px;
     overflow: hidden;
-    background: white;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+    background: rgb(0, 118, 92);
+    box-shadow: 0 4px 20px rgb(0, 0, 0);
 }
 #mapWrap img, #mapWrap .pins {
     width: 100%;
@@ -119,16 +115,16 @@ header h1 {
     position: absolute;
     width: 10px;
     height: 10px;
-    background: rgb(153, 0, 255);
+    background: rgb(0, 4, 133);
     border-radius: 50%;
     cursor: pointer;
     pointer-events: auto;
     transform: translate(-50%, -50%);
-    border: 1px solid rgba(255, 86, 199, 0.185);
     box-shadow: 0 0 10px rgba(0,0,0,0.5);
 }
+ 
 .pin:hover {
-    background-color: rgb(255, 97, 247);
+    background-color: rgb(0, 62, 232);
 }
  
 /* Pin selecionado */
@@ -144,39 +140,40 @@ header h1 {
     z-index: 1000;
     left: 0; top: 0;
     width: 100%; height: 100%;
-    background-color: rgba(0, 0, 0, 0.829);
+    background-color: rgba(0, 0, 0, 0.6);
     justify-content: center;
     align-items: center;
 }
+ 
 .card {
-    background-color: #c796ff;
+    background: aliceblue;
     padding: 20px;
     border-radius: 10px;
     width: 300px;
-    text-align: left;
-    box-shadow: 0 0 15px rgb(255, 0, 242);
+    text-align: center;
+    box-shadow: 0 0 15px rgba(0,0,0,0.5);
 }
  
 .close {
-    border-radius: 10px;
-    background-color: red;
-    right: 100px;
+    position: relative;
+    left: 45%;
+    color: White;
+    background-color: #1e1b4b;  
+    border-radius: 5px;
     font-size: 20px;
     font-weight: bold;
     cursor: pointer;
-	position: relative;
-	left: 280px;
-	bottom: 10px;
 }
  
 .close:hover {
-    color: rgb(255, 255, 255);
+    background-color: #312e81;
+    border-radius: 5px;
 }
  
 /*Fotos*/
 .seçãoDeFotos {
     text-align: center;
-    margin-bottom: 1px;
+    margin-bottom: 15px;
 }
  
 .efeitoCarrossel {
@@ -193,13 +190,12 @@ header h1 {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
-    background: rgba(0, 0, 0, 0.3);
-    color: white;
+    background: none;
+    color: black;
     border: none;
     font-size: 20px;
     cursor: pointer;
     padding: 5px;
-    border-radius: 50%;
 }
  
 .mFoto.Esquerda {
@@ -233,15 +229,13 @@ header h1 {
 }
  
 #infoPrinters label {
-    display: flex; 
-	flex-direction: column;
-    font-size: 15px;
-	border-radius: 5px
+    display: flex; flex-direction: column;
+    font-size: 14px;
 }
  
 #infoPrinters input, #infoPrinters textarea {
     padding: 5px;
-    border: 1px solid white;
+    border: 1px solid black;
     border-radius: 6px;
 }
  
@@ -253,6 +247,7 @@ header h1 {
     border-radius: 8px;
     margin-top: 10px;
     cursor: pointer;
+ 
 } #salvarImpressora:hover {
     background-color: #312e81;
 }
@@ -262,25 +257,26 @@ header h1 {
     align-items: center;
     gap: 5px;
     margin: 10px 0;
-} 
-
+}
+ 
 #checkBkp input:checked {
     accent-color: #00ff95;
 }
-
+ 
 #deletePrinterBtn {
-    background-color: red;
-    font-size: 12px;
-    cursor: pointer;
-	position: relative;
-	left:90px;
-	top: 10px;
-	border-radius: 5px;
+    color: white;
+    background: #1e1b4b;
+    position: relative;
+    top: 10px;
+    border: 1px solid black;
+    border-radius: 5px;
+    padding: 5px 20px;
 }
+ 
 #deletePrinterBtn:hover {
-	background: red;
-	background-color: #ffffff;
+    background: #312e81;
 }
+ 
  
 /* Sidebar */
 .sidebar-buttons {
@@ -290,6 +286,7 @@ header h1 {
     align-self: flex-start;
     padding-top: 25px;
 }
+ 
 .sidebar-buttons button, .sidebar-buttons input {
     background-color: #1e1b4b;
     color: white;
@@ -299,31 +296,34 @@ header h1 {
     cursor: pointer;
     font-size: 14px;
     transition: background 0.2s;
-	text-align: center;
-}
-.sidebar-buttons button:hover { 
-	background-color: #312e81; 
-}
-
-.search { 
-	background-color: #1e1b4b; 
-}
-.search::placeholder { 
-	color: #fff; 
-}
-.search:focus { 
-	background-color: #8f87fd; 
-}
-
-#toggleHelper {
-	white-space: pre-line;
 }
  
-.sidebar-counter {
-    display: flex;
-    flex-direction: column;
-    align-self: flex-start;
-    padding-top: 25px;
+.sidebar-buttons button:hover {
+     background-color: #312e81;
+}
+ 
+.search {
+    background-color: #1e1b4b;
+}
+ 
+.search::placeholder {
+    color: #fff;
+}
+ 
+.search:focus {
+    background-color: #8f87fd;
+}
+ 
+#printerCounter {
+    font-size: 1rem;
+    color: #ffffff;
+    font-weight: bold;
+}
+ 
+#bkpCounter {
+    font-size: 1rem;
+    color: #00ff95;
+    font-weight: bold;
 }
  
 /* ===== Responsividade ===== */
@@ -349,5 +349,3 @@ header h1 {
     #printerCounter { font-size: 0.9rem; }
     .card { width: 90%; }
 }
- 
- 

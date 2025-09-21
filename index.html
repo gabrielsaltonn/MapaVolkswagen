@@ -8,22 +8,15 @@
     <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap", rel="stylesheet">
 </head>
 <body>
+ 
     <!--Cabeçalho-->
     <header>
         <h1>Mapa de Impressoras</h1>
         <img id="logoSimpress" class="logo1" src="./logo/logo1.png" alt="logoSimpress">
     </header>
  
-    <!--Contêiner mapa + botões-->
+    <!--Contêiner mapa, botões e contadores-->
     <div class="map-container">
- 
-        <!--Informações e contadores ao lado esquerdo do mapa-->
-        <div class="contadorImpressoras" id="contadorImpressoras" aria-label="Informativo da quantidade de impressoras adicionadas à planta">
-            <span id="printerCounter">0 Impressoras</span>
-            <span id="bkpCounter"> | 0 Backups ativos</span>
-        </div>
- 
-        <!-- Mapa -->
         <div class="map-wrap" id="mapWrap" aria-label="Planta do local com marcadores de impressoras">
             <div id="panzoom-area">
                 <img id="floor" src="./img/fabrica.png" alt="Planta do local"/>
@@ -37,6 +30,11 @@
             <button id="toggleHelper" type="button" title="Dê dois cliques no local para adicionar a impressora">Adicionar impressoras</button>
             <button id="deletePrinterSidebarBtn" type="button">Excluir Impressoras</button>
         </div>
+    </div>
+ 
+    <div class="contadorImpressoras" id="contadorImpressoras" aria-label="Informativo da quantidade de impressoras adicionadas à planta">
+        <span id="printerCounter">0 Impressoras</span>
+        <span id="bkpCounter"> | 0 Backups ativos</span>
     </div>
    
     <!-- Modal com informações da impressora -->
@@ -60,12 +58,12 @@
  
             <!--Formulário-->
             <form id="infoPrinters">
-                <label>Modelo:<input type="text" id="mModel"></label>
-                <label>S/N:<input type="text" id="mSerial"></label>
-                <label>IP:<input type="text" id="mIP"></label>
-                <label>Setor/Andar:<input type="text" id="mLocal"></label>
-                <label>Coluna:<input type="text" id="mCol"></label>
-                <label>Observações:<textarea id="mNotes"></textarea></label>
+                <label><input type="text" id="mModel"></label>
+                <label><input type="text" id="mSerial"></label>
+                <label><input type="text" id="mIP"></label>
+                <label><input type="text" id="mLocal"></label>
+                <label><input type="text" id="mCol"></label>
+                <label><textarea id="mNotes"></textarea></label>
  
                 <!-- Checkbox Backup-->
                  <label class="checkBkp">
@@ -74,9 +72,9 @@
  
                  <button type="submit" id="salvarImpressora">Salvar</button>
             </form>
- 
-            <button id="deletePrinterBtn"> Excluir Impressora</button>
-        </div>
+           
+            <button class="Delete" id="deletePrinterBtn"> Excluir Impressora</button>
+        </div>  
     </div>
  
     <!-- Scripts -->

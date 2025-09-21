@@ -195,12 +195,12 @@ panzoomArea.addEventListener('dblclick', (e) => {
     const x = ((e.clientX - rect.left) / rect.width) * 100;
     const y = ((e.clientY - rect.top) / rect.height) * 100;
     printers.push({
-        model: "",
-        serial: "",
-        ip: "",
-        loc: "",
-        col: "",
-        notes: "Sem observações.",
+        model: " ",
+        serial: " ",
+        ip: " ",
+        loc: " ",
+        col: " ",
+        notes: " ",
         backup: false,
         photos: ["./img/printer.png"],
         x, y
@@ -215,7 +215,7 @@ panzoomArea.addEventListener('panzoomchange', (e) => adjustPins(e.detail.scale))
 // Alternar modo de captura
 toggleHelper.addEventListener('click', () => {
     captureMode = !captureMode;
-    toggleHelper.textContent = captureMode ? 'Clique no mapa 2x para adicionar\nou clique aqui para cancelar' : 'Adicionar impressoras';
+    toggleHelper.textContent = captureMode ? 'Clique no mapa 2x para adicionar' : 'Adicionar impressoras';
 });
  
 // Excluir impressora individual
@@ -275,5 +275,3 @@ document.getElementById("deletePrinterBtn").addEventListener("click", deletePrin
  
 // Inicializar pins
 renderPins();
- 
- 
