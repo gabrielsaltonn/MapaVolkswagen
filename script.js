@@ -4,7 +4,7 @@ const floor = document.getElementById('floor');
 const pinsDiv = document.getElementById('pins');
 const toggleHelper = document.getElementById('toggleHelper');
 const modal = document.getElementById('modal');
-const closeModal = document.getElementById('closemodal');
+const closeModal = document.getElementById('closeModal');
 const deletePrinterSidebarBtn = document.getElementById('deletePrinterSidebarBtn');
  
 // Formulário do modal
@@ -105,6 +105,7 @@ function adjustPins(scale) {
         pin.style.height = `${Math.max(minSize, size)}px`;
         pin.style.border = `${Math.max(minBorder, border)}px solid white`;
         pin.style.boxShadow = `0 0 ${Math.max(1, border)}px rgba(0,0,0,0.5)`;
+        pin.style.borderRadius = "50%";
     });
 }
  
@@ -271,7 +272,6 @@ function enableMultiDelete() {
 }
  
 document.getElementById("deletePrinterSidebarBtn").addEventListener("click", enableMultiDelete);
-document.getElementById("deletePrinterBtn").addEventListener("click", deletePrinter);
  
 // Inicializar pins
 renderPins();

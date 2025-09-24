@@ -54,10 +54,15 @@ header {
     gap: 15px;
     flex-wrap: wrap;
 }
+
+h1  {
+    position: relative;
+    left: 15%;
+}
  
 header h1 {
     font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-    font-size: 1.5rem;
+    font-size: 2rem;
     background: linear-gradient(80deg, #2d1f77, #6b00b6, #ff00cc);
     -webkit-background-clip: text;
     background-clip: text;
@@ -66,7 +71,10 @@ header h1 {
  
 /* Logo */
 .logo1 {
-    position: absolute; top: 0; left: 2%;
+    position: relative; 
+    top: 0; 
+    right: 42%;
+    top: 40%;
 }
  
 /* Layout principal */
@@ -83,7 +91,7 @@ header h1 {
 /* Mapa */
 #mapWrap {
     position: relative;
-    right: 17%;
+    right: 10%;
     width: 50%;
     border: 5px rgb(0, 255, 179);
     border-radius: 20px;
@@ -112,20 +120,26 @@ header h1 {
  
 /* Pin padrão */
 .pin {
-    position: absolute;
-    width: 10px;
-    height: 10px;
-    background: rgb(0, 4, 133);
+    position: relative;
+    background: red;
     border-radius: 50%;
-    cursor: pointer;
-    pointer-events: auto;
-    transform: translate(-50%, -50%);
-    box-shadow: 0 0 10px rgba(0,0,0,0.5);
+    border: 1px solid white;
+    box-shadow: 0 0 3px rgba(0,0,0,0.5);
 }
  
 .pin:hover {
     background-color: rgb(0, 62, 232);
 }
+
+.pin::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 0;
+}
+
  
 /* Pin selecionado */
 .selected-pin {
@@ -282,7 +296,7 @@ header h1 {
 /* Sidebar */
 .sidebar-buttons {
     position: relative;
-    right: 15%;
+    right: 0%;
     display: flex;
     flex-direction: column;
     gap: 10px;
@@ -306,11 +320,17 @@ header h1 {
 }
  
 .search {
-    background-color: #1e1b4b;
+    position: relative;
+    left: 20%;
+    border: 1px solid white;
+    border-radius: 5px;
+    text-align: center;
+    padding: 10px 60px 10px;
+    background-color: #7e79c049;
 }
  
 .search::placeholder {
-    color: #fff;
+    color: black;
 }
  
 .search:focus {
