@@ -2,7 +2,6 @@
 const mapWrap = document.getElementById('mapWrap');
 const floor = document.getElementById('floor');
 const pinsDiv = document.getElementById('pins');
-const toggleHelper = document.getElementById('toggleHelper');
 const modal = document.getElementById('modal');
 const closeModal = document.getElementById('closeModal');
 const deletePrinterSidebarBtn = document.getElementById('deletePrinterSidebarBtn');
@@ -27,7 +26,6 @@ const photoInput = document.getElementById('adFoto');
 
 // Dados
 let printers = [];
-let captureMode = false;
 let currentPrinterIndex = null;
 let currentPhotoIndex = 0;
 let selectedPins = new Set();
@@ -271,12 +269,12 @@ window.addEventListener('click', (e) => {
     if (e.target === modal) modal.style.display = 'none';
 });
 
-// Adicionar impressora com duplo clique
+// Adicionar impressora com duplo clique (novo fluxo direto)
 panzoomArea.addEventListener('dblclick', async (e) => {
-    if (!captureMode) return;
     const rect = panzoomArea.getBoundingClientRect();
     const x = ((e.clientX - rect.left) / rect.width) * 100;
     const y = ((e.clientY - rect.top) / rect.height) * 100;
+
     const nova = {
         model: "",
         serial: "",
@@ -288,18 +286,18 @@ panzoomArea.addEventListener('dblclick', async (e) => {
         photos: ["./img/printer.png"],
         x, y
     };
-    await criarImpressoraNoServidor(nova);
+
+    const criada = await criarImpressoraNoServidor(nova);
     await carregarImpressorasDoServidor();
+
+    const idx = printers.findIndex(p => p.id === criada.id);
+    if (idx !== -1) {
+        showModal(printers[idx], idx);
+    }
 });
 
 // Zoom altera pins
 panzoomArea.addEventListener('panzoomchange', (e) => adjustPins(e.detail.scale));
-
-// Alternar modo de captura
-toggleHelper.addEventListener('click', () => {
-    captureMode = !captureMode;
-    toggleHelper.textContent = captureMode ? 'Clique no mapa 2x para adicionar' : 'Adicionar impressoras';
-});
 
 // Excluir impressora individual
 document.getElementById("deletePrinterBtn").addEventListener("click", async () => {
