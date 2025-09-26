@@ -26,7 +26,7 @@ const removePhotoBtn = document.getElementById('removerFoto');
 const photoInput = document.getElementById('adFoto');
 
 // Dados
-let printers = JSON.parse(localStorage.getItem("printers")) || [];
+let printers = [];
 let captureMode = false;
 let currentPrinterIndex = null;
 let currentPhotoIndex = 0;
@@ -41,33 +41,95 @@ const panzoomInstance = Panzoom(panzoomArea, {
 });
 panzoomArea.parentElement.addEventListener('wheel', panzoomInstance.zoomWithWheel);
 
-// Salvar no localStorage
-function savePrinters() {
-    localStorage.setItem("printers", JSON.stringify(printers));
+// ================== API ==================
+const API_URL = "http://localhost:3000/api/impressoras";
+
+// Buscar impressoras do servidor
+async function carregarImpressorasDoServidor() {
+    try {
+        const resp = await fetch(API_URL);
+        if (!resp.ok) throw new Error("Erro ao buscar impressoras");
+        printers = await resp.json();
+        renderPins();
+    } catch (err) {
+        console.error("⚠️ Backend não respondeu, usando localStorage:", err);
+        printers = JSON.parse(localStorage.getItem("printers")) || [];
+        renderPins();
+    }
 }
 
+// Criar impressora
+async function criarImpressoraNoServidor(printer) {
+    try {
+        const resp = await fetch(API_URL, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(printer)
+        });
+        if (!resp.ok) throw new Error("Erro ao criar impressora");
+        return await resp.json();
+    } catch (err) {
+        console.error("Erro ao criar:", err);
+    }
+}
+
+// Atualizar impressora
+async function atualizarImpressoraNoServidor(id, partial) {
+    try {
+        const resp = await fetch(`${API_URL}/${id}`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(partial)
+        });
+        if (!resp.ok) throw new Error("Erro ao atualizar");
+        return await resp.json();
+    } catch (err) {
+        console.error("Erro ao atualizar:", err);
+    }
+}
+
+// Deletar impressora
+async function deletarImpressoraNoServidor(id) {
+    try {
+        const resp = await fetch(`${API_URL}/${id}`, { method: "DELETE" });
+        if (!resp.ok) throw new Error("Erro ao deletar");
+        return await resp.json();
+    } catch (err) {
+        console.error("Erro ao deletar:", err);
+    }
+}
+
+// ================== FUNÇÕES EXISTENTES ==================
+
 // Atualizar contadores
-function updateCounters() {
-    document.getElementById("printerCounter").textContent = `${printers.length} ${printers.length === 1 ? 'impressora' : 'impressoras'}`;
+function updateCounters(filteredCount = null) {
+    const total = printers.length;
     const backups = printers.filter(p => p.backup).length;
-    document.getElementById("bkpCounter").textContent = ` | ${backups} backups ativos`;
+
+    if (filteredCount !== null && filteredCount !== total) {
+        document.getElementById("printerCounter").textContent =
+            `${filteredCount} de ${total} impressoras`;
+    } else {
+        document.getElementById("printerCounter").textContent =
+            `${total} ${total === 1 ? 'impressora' : 'impressoras'}`;
+    }
+
+    document.getElementById("bkpCounter").textContent =
+        ` | ${backups} backups ativos`;
 }
 
 // Ajustar tamanho dos pins conforme o zoom
 function adjustPins(scale) {
-    const minSize = 1;   // ponto mínimo
-    const maxSize = 10;  // bolinha grande
+    const minSize = 1;
+    const maxSize = 10;
     const zoomMax = panzoomInstance.getOptions().maxScale;
     const zoomMin = panzoomInstance.getOptions().minScale;
 
-    // cálculo proporcional inverso
     const size = Math.max(minSize, maxSize - ((scale - zoomMin) / (zoomMax - zoomMin)) * (maxSize - minSize));
 
     document.querySelectorAll(".pin-circle").forEach(pin => {
         pin.style.width = `${size}px`;
         pin.style.height = `${size}px`;
-
-        // No zoom máximo, vira só um ponto sólido
         if (size <= 1.5) {
             pin.style.border = "none";
             pin.style.boxShadow = "none";
@@ -78,10 +140,8 @@ function adjustPins(scale) {
     });
 
     document.querySelectorAll(".pin-tip").forEach(tip => {
-        if (size <= 1.5) {
-            tip.style.display = "none"; // 🔴 ponta some no zoom máximo
-        } else {
-            tip.style.display = "block";
+        tip.style.display = size <= 1.5 ? "none" : "block";
+        if (size > 1.5) {
             tip.style.width = `${size * 0.8}px`;
             tip.style.height = `${size * 1.2}px`;
         }
@@ -89,9 +149,9 @@ function adjustPins(scale) {
 }
 
 // Renderizar pins
-function renderPins(selectMode = false) {
+function renderPins(data = printers, selectMode = false) {
     pinsDiv.innerHTML = "";
-    printers.forEach((printer, index) => {
+    data.forEach((printer, index) => {
         const pinWrapper = document.createElement("div");
         pinWrapper.className = "pin-wrapper";
         pinWrapper.style.left = `${printer.x}%`;
@@ -110,22 +170,23 @@ function renderPins(selectMode = false) {
 
         pinWrapper.addEventListener("click", () => {
             if (selectMode) {
-                if (selectedPins.has(index)) {
-                    selectedPins.delete(index);
+                if (selectedPins.has(printer.id)) {
+                    selectedPins.delete(printer.id);
                     pinWrapper.classList.remove("selected-pin");
                 } else {
-                    selectedPins.add(index);
+                    selectedPins.add(printer.id);
                     pinWrapper.classList.add("selected-pin");
                 }
             } else {
-                showModal(printer, index);
+                const realIndex = data.findIndex(p => p.id === printer.id);
+                showModal(printer, realIndex);
             }
         });
 
         pinsDiv.appendChild(pinWrapper);
     });
 
-    updateCounters();
+    updateCounters(data.length);
     adjustPins(panzoomInstance.getScale());
 }
 
@@ -136,13 +197,13 @@ function showModal(printer, index) {
     if (!printer.photos || printer.photos.length === 0) printer.photos = ["./img/printer.png"];
     photoPreview.src = printer.photos[currentPhotoIndex];
 
-    mModel.value = printer.model;
-    mSerial.value = printer.serial;
-    mIP.value = printer.ip;
-    mLoc.value = printer.loc;
-    mCol.value = printer.col;
-    mNotes.value = printer.notes;
-    mBackup.checked = printer.backup;
+    mModel.value = printer.model || "";
+    mSerial.value = printer.serial || "";
+    mIP.value = printer.ip || "";
+    mLoc.value = printer.loc || "";
+    mCol.value = printer.col || "";
+    mNotes.value = printer.notes || "";
+    mBackup.checked = printer.backup || false;
 
     modal.style.display = 'flex';
 }
@@ -167,39 +228,40 @@ photoInput.addEventListener("change", (e) => {
     const file = e.target.files[0];
     if (!file) return;
     const reader = new FileReader();
-    reader.onload = () => {
+    reader.onload = async () => {
         printers[currentPrinterIndex].photos.push(reader.result);
-        savePrinters();
-        currentPhotoIndex = printers[currentPrinterIndex].photos.length - 1;
+        await atualizarImpressoraNoServidor(printers[currentPrinterIndex].id, { photos: printers[currentPrinterIndex].photos });
         photoPreview.src = printers[currentPrinterIndex].photos[currentPhotoIndex];
     };
     reader.readAsDataURL(file);
 });
 
 // Remover foto
-removePhotoBtn.addEventListener("click", () => {
+removePhotoBtn.addEventListener("click", async () => {
     const printer = printers[currentPrinterIndex];
     if (printer.photos.length > 1) {
         printer.photos.splice(currentPhotoIndex, 1);
         currentPhotoIndex = Math.max(0, currentPhotoIndex - 1);
         photoPreview.src = printer.photos[currentPhotoIndex];
-        savePrinters();
+        await atualizarImpressoraNoServidor(printer.id, { photos: printer.photos });
     }
 });
 
 // Salvar impressora
-savePrinterBtn.addEventListener("click", (e) => {
+savePrinterBtn.addEventListener("click", async (e) => {
     e.preventDefault();
     const printer = printers[currentPrinterIndex];
-    printer.model = mModel.value;
-    printer.serial = mSerial.value;
-    printer.ip = mIP.value;
-    printer.loc = mLoc.value;
-    printer.col = mCol.value;
-    printer.notes = mNotes.value;
-    printer.backup = mBackup.checked;
-    savePrinters();
-    renderPins();
+    const updated = {
+        model: mModel.value,
+        serial: mSerial.value,
+        ip: mIP.value,
+        loc: mLoc.value,
+        col: mCol.value,
+        notes: mNotes.value,
+        backup: mBackup.checked
+    };
+    await atualizarImpressoraNoServidor(printer.id, updated);
+    await carregarImpressorasDoServidor();
     modal.style.display = 'none';
 });
 
@@ -210,24 +272,24 @@ window.addEventListener('click', (e) => {
 });
 
 // Adicionar impressora com duplo clique
-panzoomArea.addEventListener('dblclick', (e) => {
+panzoomArea.addEventListener('dblclick', async (e) => {
     if (!captureMode) return;
     const rect = panzoomArea.getBoundingClientRect();
     const x = ((e.clientX - rect.left) / rect.width) * 100;
     const y = ((e.clientY - rect.top) / rect.height) * 100;
-    printers.push({
-        model: " ",
-        serial: " ",
-        ip: " ",
-        loc: " ",
-        col: " ",
-        notes: " ",
+    const nova = {
+        model: "",
+        serial: "",
+        ip: "",
+        loc: "",
+        col: "",
+        notes: "",
         backup: false,
         photos: ["./img/printer.png"],
         x, y
-    });
-    savePrinters();
-    renderPins();
+    };
+    await criarImpressoraNoServidor(nova);
+    await carregarImpressorasDoServidor();
 });
 
 // Zoom altera pins
@@ -240,21 +302,18 @@ toggleHelper.addEventListener('click', () => {
 });
 
 // Excluir impressora individual
-function deletePrinter() {
-    if (currentPrinterIndex !== null) {
-        printers.splice(currentPrinterIndex, 1);
-        savePrinters();
-        renderPins();
-        modal.style.display = 'none';
-        currentPrinterIndex = null;
-    }
-}
-document.getElementById("deletePrinterBtn").addEventListener("click", deletePrinter);
+document.getElementById("deletePrinterBtn").addEventListener("click", async () => {
+    const printer = printers[currentPrinterIndex];
+    await deletarImpressoraNoServidor(printer.id);
+    await carregarImpressorasDoServidor();
+    modal.style.display = 'none';
+    currentPrinterIndex = null;
+});
 
 // Excluir múltiplas impressoras
 function enableMultiDelete() {
     selectedPins.clear();
-    renderPins(true);
+    renderPins(printers, true);
     const sidebar = document.querySelector(".sidebar-buttons");
     if (document.getElementById("confirmDeleteBtn")) return;
 
@@ -274,11 +333,14 @@ function enableMultiDelete() {
     cancelBtn.style.marginTop = "5px";
     sidebar.appendChild(cancelBtn);
 
-    confirmBtn.addEventListener("click", () => {
-        printers = printers.filter((_, i) => !selectedPins.has(i));
-        savePrinters();
+    confirmBtn.addEventListener("click", async () => {
+        await fetch(`${API_URL}/bulk-delete`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ ids: Array.from(selectedPins) })
+        });
         selectedPins.clear();
-        renderPins();
+        await carregarImpressorasDoServidor();
         confirmBtn.remove();
         cancelBtn.remove();
     });
@@ -290,7 +352,7 @@ function enableMultiDelete() {
         cancelBtn.remove();
     });
 }
-document.getElementById("deletePrinterSidebarBtn").addEventListener("click", enableMultiDelete);
+deletePrinterSidebarBtn.addEventListener("click", enableMultiDelete);
 
-// Inicializar pins
-renderPins();
+// Inicializar
+carregarImpressorasDoServidor();
