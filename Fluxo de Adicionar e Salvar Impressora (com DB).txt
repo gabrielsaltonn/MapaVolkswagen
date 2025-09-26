@@ -1,0 +1,43 @@
+[Usuário] 
+   |
+   | (1) Clica em "Adicionar impressoras"
+   v
+[Frontend JS - captureMode]
+   |
+   | (2) Duplo clique no mapa → pega coordenadas (x, y)
+   v
+[Modal de Formulário aparece]
+   |
+   | (3) Usuário preenche: modelo, serial, IP, setor, coluna, observações, backup
+   | (4) Opcional: adiciona foto da impressora
+   v
+[Botão "Salvar"]
+   |
+   | (5) Frontend envia os dados via POST para API:
+   |     {
+   |       modelo: "HP LaserJet",
+   |       serial: "SN1234",
+   |       ip: "192.168.0.10",
+   |       setor: "TI",
+   |       coluna: "Coluna A",
+   |       observacoes: "Precisa de toner",
+   |       backup: false,
+   |       x: 42.5,
+   |       y: 67.8,
+   |       fotos: ["base64 ou link"]
+   |     }
+   v
+[API Backend (Node/Express, por ex.)]
+   |
+   | (6) API recebe o JSON e faz um INSERT no MySQL:
+   |     INSERT INTO impressoras (...) VALUES (...)
+   v
+[Banco de Dados MySQL]
+   |
+   | (7) Impressora salva como nova linha na tabela
+   v
+[Resposta da API: 201 Created]
+   |
+   | (8) Frontend atualiza a lista `printers` e redesenha os pins
+   v
+[Mapa atualizado com novo pin]

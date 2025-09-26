@@ -153,6 +153,8 @@ header h1 {
     background-color: rgba(0, 0, 0, 0.6);
     justify-content: center;
     align-items: center;
+    overflow-y: auto;
+
 }
 .card {
     background: aliceblue;
@@ -161,6 +163,11 @@ header h1 {
     width: 300px;
     text-align: center;
     box-shadow: 0 0 15px rgba(0,0,0,0.5);
+    position: relative;
+    z-index: 2000;
+    max-height: 90vh;
+    overflow-y: auto;
+
 }
 .close {
     position: relative;
