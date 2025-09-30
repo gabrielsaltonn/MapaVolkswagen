@@ -21,7 +21,21 @@ router.post("/", (req, res) => {
     [model, serial, ip, loc, col, notes, backup ? 1 : 0, JSON.stringify(photos || []), x, y],
     function (err) {
       if (err) return res.status(500).json({ error: err.message });
-      res.json({ id: this.lastID, ...req.body });
+
+      // retorna o objeto salvo com ID + dados corretos
+      res.json({
+        id: this.lastID,
+        model,
+        serial,
+        ip,
+        loc,
+        col,
+        notes,
+        backup: backup ? true : false,
+        photos: photos || [],
+        x,
+        y
+      });
     }
   );
 });
