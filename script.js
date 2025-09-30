@@ -5,6 +5,7 @@ const pinsDiv = document.getElementById('pins');
 const modal = document.getElementById('modal');
 const closeModal = document.getElementById('closeModal');
 const deletePrinterSidebarBtn = document.getElementById('deletePrinterSidebarBtn');
+const confirmDeleteBtn = document.getElementById("confirmDeleteBtn");
 
 // Formulário do modal
 const mModel = document.getElementById('mModel');
@@ -24,11 +25,19 @@ const addPhotoBtn = document.getElementById('addFotoBtn');
 const removePhotoBtn = document.getElementById('removerFoto');
 const photoInput = document.getElementById('adFoto');
 
+// Botões adicionais
+const addPrinterBtn = document.getElementById("addPrinterSidebarBtn");
+const deletePrinterBtn = document.getElementById("deletePrinterBtn");
+
 // Dados
 let printers = [];
 let currentPrinterIndex = null;
 let currentPhotoIndex = 0;
 let selectedPins = new Set();
+
+// Estados
+let selectMode = false;
+let addMode = false;
 
 // Panzoom
 const panzoomArea = document.getElementById('panzoom-area');
@@ -41,6 +50,29 @@ panzoomArea.parentElement.addEventListener('wheel', panzoomInstance.zoomWithWhee
 
 // ================== API ==================
 const API_URL = "http://localhost:3000/api/impressoras";
+
+// ================== FILTRO DE BUSCA ======
+const searchInput = document.getElementById("search");
+
+searchInput.addEventListener("input", () => {
+    const termo = searchInput.value.toLowerCase().trim();
+
+    if(!termo) {
+        renderPins(printers);
+        return;
+    }
+
+    const filtradas = printers.filter(p => 
+    (p.model && p.model.toLowerCase().includes(termo)) ||
+    (p.serial && p.serial.toLowerCase().includes(termo)) ||
+    (p.ip && p.ip.toLowerCase().includes(termo)) ||
+    (p.loc && p.loc.toLowerCase().includes(termo)) ||
+    (p.col && p.col.toLowerCase().includes(termo)) ||
+    (p.notes && p.notes.toLowerCase().includes(termo))
+    );
+
+    renderPins(filtradas);
+})
 
 // Buscar impressoras do servidor
 async function carregarImpressorasDoServidor() {
@@ -147,9 +179,9 @@ function adjustPins(scale) {
 }
 
 // Renderizar pins
-function renderPins(data = printers, selectMode = false) {
+function renderPins(data = printers) {
     pinsDiv.innerHTML = "";
-    data.forEach((printer, index) => {
+    data.forEach((printer) => {
         const pinWrapper = document.createElement("div");
         pinWrapper.className = "pin-wrapper";
         pinWrapper.style.left = `${printer.x}%`;
@@ -193,85 +225,61 @@ function showModal(printer, index) {
     currentPrinterIndex = index;
     currentPhotoIndex = 0;
     if (!printer.photos || printer.photos.length === 0) printer.photos = ["./img/printer.png"];
-    photoPreview.src = printer.photos[currentPhotoIndex];
-
+    photoPreview.src = printer.photos[0];
     mModel.value = printer.model || "";
     mSerial.value = printer.serial || "";
     mIP.value = printer.ip || "";
     mLoc.value = printer.loc || "";
     mCol.value = printer.col || "";
     mNotes.value = printer.notes || "";
-    mBackup.checked = printer.backup || false;
-
-    modal.style.display = 'flex';
+    mBackup.checked = printer.backup ? true : false;
+    modal.style.display = "flex";
 }
 
-// Navegação de fotos
-prevPhotoBtn.addEventListener("click", () => {
-    const printer = printers[currentPrinterIndex];
-    if (!printer.photos) return;
-    currentPhotoIndex = (currentPhotoIndex - 1 + printer.photos.length) % printer.photos.length;
-    photoPreview.src = printer.photos[currentPhotoIndex];
-});
-nextPhotoBtn.addEventListener("click", () => {
-    const printer = printers[currentPrinterIndex];
-    if (!printer.photos) return;
-    currentPhotoIndex = (currentPhotoIndex + 1) % printer.photos.length;
-    photoPreview.src = printer.photos[currentPhotoIndex];
-});
-
-// Adicionar foto
-addPhotoBtn.addEventListener("click", () => photoInput.click());
-photoInput.addEventListener("change", (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
-    const reader = new FileReader();
-    reader.onload = async () => {
-        printers[currentPrinterIndex].photos.push(reader.result);
-        await atualizarImpressoraNoServidor(printers[currentPrinterIndex].id, { photos: printers[currentPrinterIndex].photos });
-        photoPreview.src = printers[currentPrinterIndex].photos[currentPhotoIndex];
-    };
-    reader.readAsDataURL(file);
-});
-
-// Remover foto
-removePhotoBtn.addEventListener("click", async () => {
-    const printer = printers[currentPrinterIndex];
-    if (printer.photos.length > 1) {
-        printer.photos.splice(currentPhotoIndex, 1);
-        currentPhotoIndex = Math.max(0, currentPhotoIndex - 1);
-        photoPreview.src = printer.photos[currentPhotoIndex];
-        await atualizarImpressoraNoServidor(printer.id, { photos: printer.photos });
-    }
+// Fechar modal
+closeModal.addEventListener("click", () => {
+    modal.style.display = "none";
 });
 
 // Salvar impressora
 savePrinterBtn.addEventListener("click", async (e) => {
     e.preventDefault();
+    if (currentPrinterIndex === null) return;
+
     const printer = printers[currentPrinterIndex];
-    const updated = {
+    const atualizado = {
         model: mModel.value,
         serial: mSerial.value,
         ip: mIP.value,
         loc: mLoc.value,
         col: mCol.value,
         notes: mNotes.value,
-        backup: mBackup.checked
+        backup: mBackup.checked,
+        photos: printer.photos
     };
-    await atualizarImpressoraNoServidor(printer.id, updated);
-    await carregarImpressorasDoServidor();
-    modal.style.display = 'none';
+
+    await atualizarImpressoraNoServidor(printer.id, atualizado);
+    printers[currentPrinterIndex] = { ...printer, ...atualizado };
+    renderPins();
+    modal.style.display = "none";
 });
 
-// Fechar modal
-closeModal.addEventListener('click', () => modal.style.display = 'none');
-window.addEventListener('click', (e) => {
-    if (e.target === modal) modal.style.display = 'none';
+// ================== MODOS DE OPERAÇÃO ==================
+
+// Botão de adicionar impressoras
+addPrinterBtn.addEventListener("click", () => {
+    addMode = !addMode;
+    if (addMode) {
+        addPrinterBtn.textContent = "Cancelar Adição";
+        mapWrap.addEventListener("dblclick", addPrinterOnMap);
+    } else {
+        addPrinterBtn.textContent = "Adicionar Impressora";
+        mapWrap.removeEventListener("dblclick", addPrinterOnMap);
+    }
 });
 
-// Adicionar impressora com duplo clique (novo fluxo direto)
-panzoomArea.addEventListener('dblclick', async (e) => {
-    const rect = panzoomArea.getBoundingClientRect();
+function addPrinterOnMap(e) {
+    const rect = mapWrap.getBoundingClientRect();
     const x = ((e.clientX - rect.left) / rect.width) * 100;
     const y = ((e.clientY - rect.top) / rect.height) * 100;
 
@@ -283,74 +291,87 @@ panzoomArea.addEventListener('dblclick', async (e) => {
         col: "",
         notes: "",
         backup: false,
-        photos: ["./img/printer.png"],
+        photos: [],
         x, y
     };
 
-    const criada = await criarImpressoraNoServidor(nova);
-    await carregarImpressorasDoServidor();
+    criarImpressoraNoServidor(nova).then(saved => {
+        if (saved) {
+            printers.push(saved);
+            renderPins();
+            showModal(saved, printers.length - 1);
+        }
+    });
+}
 
-    const idx = printers.findIndex(p => p.id === criada.id);
-    if (idx !== -1) {
-        showModal(printers[idx], idx);
+// Botão de selecionar/excluir impressoras em massa
+deletePrinterSidebarBtn.addEventListener("click", () => {
+    selectMode = !selectMode;
+    if (selectMode) {
+        deletePrinterSidebarBtn.textContent = "Cancelar Seleção";
+        confirmDeleteBtn.style.display = "inline-block";
+    } else {
+        deletePrinterSidebarBtn.textContent = "Selecionar para Exclusão";
+        confirmDeleteBtn.style.display = "none";
+        selectedPins.clear();
+        renderPins();
     }
 });
 
-// Zoom altera pins
-panzoomArea.addEventListener('panzoomchange', (e) => adjustPins(e.detail.scale));
+// Confirmar exclusão em massa
+confirmDeleteBtn.addEventListener("click", async () => {
+    if (selectedPins.size === 0) {
+        alert("Nenhuma impressora selecionada para exclusão.");
+        return;
+    }
 
-// Excluir impressora individual
-document.getElementById("deletePrinterBtn").addEventListener("click", async () => {
-    const printer = printers[currentPrinterIndex];
-    await deletarImpressoraNoServidor(printer.id);
-    await carregarImpressorasDoServidor();
-    modal.style.display = 'none';
-    currentPrinterIndex = null;
-});
-
-// Excluir múltiplas impressoras
-function enableMultiDelete() {
-    selectedPins.clear();
-    renderPins(printers, true);
-    const sidebar = document.querySelector(".sidebar-buttons");
-    if (document.getElementById("confirmDeleteBtn")) return;
-
-    const confirmBtn = document.createElement("button");
-    confirmBtn.id = "confirmDeleteBtn";
-    confirmBtn.textContent = "Confirmar exclusão";
-    confirmBtn.style.background = "red";
-    confirmBtn.style.color = "white";
-    confirmBtn.style.marginTop = "10px";
-    sidebar.appendChild(confirmBtn);
-
-    const cancelBtn = document.createElement("button");
-    cancelBtn.id = "cancelDeleteBtn";
-    cancelBtn.textContent = "Cancelar exclusão";
-    cancelBtn.style.background = "red";
-    cancelBtn.style.color = "white";
-    cancelBtn.style.marginTop = "5px";
-    sidebar.appendChild(cancelBtn);
-
-    confirmBtn.addEventListener("click", async () => {
-        await fetch(`${API_URL}/bulk-delete`, {
+    const ids = Array.from(selectedPins);
+    try {
+        const resp = await fetch(`${API_URL}/bulk-delete`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ ids: Array.from(selectedPins) })
+            body: JSON.stringify({ ids })
         });
-        selectedPins.clear();
-        await carregarImpressorasDoServidor();
-        confirmBtn.remove();
-        cancelBtn.remove();
-    });
 
-    cancelBtn.addEventListener("click", () => {
+        if (!resp.ok) throw new Error("Erro ao excluir impressoras");
+
+        const result = await resp.json();
+        console.log("Excluídas:", result);
+
+        // Remove localmente
+        printers = printers.filter(p => !ids.includes(p.id));
         selectedPins.clear();
+
         renderPins();
-        confirmBtn.remove();
-        cancelBtn.remove();
-    });
-}
-deletePrinterSidebarBtn.addEventListener("click", enableMultiDelete);
 
-// Inicializar
+        alert(`${result.deleted} impressoras removidas com sucesso!`);
+    } catch (err) {
+        console.error("Erro ao excluir em massa:", err);
+        alert("Falha ao excluir impressoras.");
+    } finally {
+        selectMode = false;
+        deletePrinterSidebarBtn.textContent = "Selecionar para Exclusão";
+        confirmDeleteBtn.style.display = "none";
+    }
+});
+
+// Excluir impressora individual (botão do modal)
+deletePrinterBtn.addEventListener("click", async () => {
+    if (currentPrinterIndex === null) return;
+    const printer = printers[currentPrinterIndex];
+
+    if (!confirm(`Excluir a impressora ${printer.model || ""}?`)) return;
+
+    try {
+        await deletarImpressoraNoServidor(printer.id);
+        printers.splice(currentPrinterIndex, 1);
+        renderPins();
+        modal.style.display = "none";
+    } catch (err) {
+        console.error("Erro ao excluir impressora:", err);
+        alert("Falha ao excluir impressora.");
+    }
+});
+
+// ================== INICIALIZAÇÃO ==================
 carregarImpressorasDoServidor();

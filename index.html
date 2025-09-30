@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Mapa de Impressoras</title>
     <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap", rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
 </head>
 <body>
  
@@ -29,10 +29,15 @@
         <div class="sidebar-buttons">
             <div class="contadorImpressoras" id="contadorImpressoras" aria-label="Informativo da quantidade de impressoras adicionadas à planta">
                 <span id="printerCounter">0 Impressoras</span>
-                 <span id="bkpCounter"> | 0 Backups ativos</span>
+                <span id="bkpCounter"> | 0 Backups ativos</span>
             </div>
-            <button id="toggleHelper" type="button" title="Dê dois cliques no local para adicionar a impressora">Adicionar impressoras</button>
-            <button id="deletePrinterSidebarBtn" type="button">Excluir Impressoras</button>
+
+            <!-- Novo conjunto de botões -->
+            <button id="addPrinterSidebarBtn" type="button">Adicionar Impressora</button>
+            <button id="deletePrinterSidebarBtn" type="button">Selecionar para Exclusão</button>
+            <button id="confirmDeleteBtn" type="button" style="display: none; background-color: red; color: white;">
+                Confirmar Exclusão
+            </button>
         </div>
     </div>
    
@@ -72,7 +77,10 @@
                  <button type="submit" id="salvarImpressora">Salvar</button>
             </form>
            
-            <button class="Delete" id="deletePrinterBtn"> Excluir Impressora</button>
+            <!-- Exclusão individual -->
+            <button class="Delete" id="deletePrinterBtn" style="background-color: red; color: white; margin-top: 10px;">
+                Excluir Impressora
+            </button>
         </div>  
     </div>
  

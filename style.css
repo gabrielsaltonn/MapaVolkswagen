@@ -34,8 +34,13 @@ body {
     background: linear-gradient(80deg, #1a223d, #0e725c, #217e97);
 }
 
-ol, ul { list-style: none; }
-table { border-collapse: collapse; border-spacing: 0; }
+ol, ul {
+    list-style: none;
+}
+table {
+    border-collapse: collapse;
+    border-spacing: 0; 
+}
 
 /* Header */
 header {
@@ -47,7 +52,12 @@ header {
     gap: 15px;
     flex-wrap: wrap;
 }
-h1  { position: relative; left: 15%; }
+
+h1  {
+    position: relative;
+    left: 15%;
+}
+
 header h1 {
     font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     font-size: 2rem;
@@ -58,7 +68,11 @@ header h1 {
 }
 
 /* Logo */
-.logo1 { position: relative; top: 40%; right: 42%; }
+.logo1 {
+    position: relative; 
+    top: 40%;
+    right: 42%;
+}
 
 /* Layout principal */
 .map-container {
@@ -81,6 +95,7 @@ header h1 {
     background: white;
     box-shadow: 4px 4px 20px 4px rgb(0, 0, 0);
 }
+
 #mapWrap img, #mapWrap .pins {
     width: 100%;
     height: auto;
@@ -93,6 +108,7 @@ header h1 {
     width: 100%;
     height: auto;  
 }
+
 #panzoom-area .pins {
     position: absolute;
     top: 0;
@@ -131,7 +147,9 @@ header h1 {
   background: rgb(0, 21, 214);
 }
 
-.pin-wrapper:hover .pin-circle { filter: brightness(0.92); }
+.pin-wrapper:hover .pin-circle {
+    filter: brightness(0.92);
+}
 
 .pin-wrapper.selected-pin .pin-circle {
   outline: 2px solid rgba(255,255,255,0.35);
@@ -180,62 +198,174 @@ header h1 {
     font-weight: bold;
     cursor: pointer;
 }
-.close:hover { background-color: #312e81; border-radius: 5px; }
+
+.close:hover {
+    background-color: #312e81;
+    border-radius: 5px;
+}
 
 /*Fotos*/
-.seçãoDeFotos { text-align: center; margin-bottom: 15px; }
-.efeitoCarrossel { position: relative; display: inline-block; }
-.efeitoCarrossel img { max-width: 250px; border-radius: 10px; }
-.mFoto { position: absolute; top: 50%; transform: translateY(-50%); background: none; color: black; border: none; font-size: 20px; cursor: pointer; padding: 5px; }
-.mFoto.Esquerda { left: -30px; }
-.mFoto.Direita { right: -30px; }
+.seçãoDeFotos {
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+.efeitoCarrossel {
+    position: relative; 
+    display: inline-block;
+}
+
+.efeitoCarrossel img {
+    max-width: 250px; 
+    border-radius: 10px;
+}
+
+.mFoto {
+    position: absolute; 
+    top: 50%; 
+    transform: translateY(-50%); 
+    background: none; 
+    color: black; 
+    border: none; 
+    font-size: 20px; 
+    cursor: pointer; 
+    padding: 5px; 
+}
+
+.mFoto.Esquerda { 
+    left: -30px; 
+}
+
+.mFoto.Direita { 
+    right: -30px; 
+}
 
 .actFotos button {
-    margin: 5px; padding: 8px 12px; border: none; border-radius: 6px;
-    cursor: pointer; background: #1e1b4b; color: white;
+    margin: 5px; 
+    padding: 8px 12px; 
+    border: none; 
+    border-radius: 6px;
+    cursor: pointer; 
+    background: #1e1b4b; 
+    color: white;
 }
-.actFotos button:hover { background: #312e81; }
+
+.actFotos button:hover { 
+    background: #312e81; 
+}
 
 /*Formulário do modal*/
-#infoPrinters { display: flex; flex-direction: column; gap: 8px; }
-#infoPrinters label { display: flex; flex-direction: column; font-size: 14px; }
+#infoPrinters { 
+    display: flex; 
+    flex-direction: column; 
+    gap: 8px; 
+}
+
+#infoPrinters label { 
+    display: flex; 
+    flex-direction: column; 
+    font-size: 14px; 
+}
+
 #infoPrinters input, #infoPrinters textarea {
-    padding: 5px; border: 1px solid black; border-radius: 6px;
+    padding: 5px; 
+    border: 1px solid black; 
+    border-radius: 6px;
 }
+
 #salvarImpressora {
-    background-color: #1e1b4b; color: white; border: none;
-    padding: 10px; border-radius: 8px; margin-top: 10px; cursor: pointer;
+    background-color: #1e1b4b; 
+    color: white; 
+    border: none;
+    padding: 10px; 
+    border-radius: 8px; 
+    margin-top: 10px; 
+    cursor: pointer;
 }
-#salvarImpressora:hover { background-color: #312e81; }
-.checkBkp { display: flex; align-items: center; gap: 5px; margin: 10px 0; }
-#checkBkp input:checked { accent-color: #00ff95; }
+
+#salvarImpressora:hover { 
+    background-color: #312e81; 
+}
+
+.checkBkp { 
+    display: flex; 
+    align-items: center; 
+    gap: 5px; 
+    margin: 10px 0; 
+}
+
+#checkBkp input:checked { 
+    accent-color: #00ff95; 
+}
+
 #deletePrinterBtn {
-    color: white; background: #1e1b4b; position: relative; top: 10px;
-    border: 1px solid black; border-radius: 5px; padding: 5px 20px;
+    color: white; 
+    background: #1e1b4b; 
+    position: relative; 
+    top: 10px;
+    border: 1px solid black; 
+    border-radius: 5px; 
+    padding: 5px 20px;
 }
-#deletePrinterBtn:hover { background: #312e81; }
+
+#deletePrinterBtn:hover { 
+    background: #312e81; 
+}
 
 /* Sidebar */
 .sidebar-buttons {
-    position: relative; right: 0%;
-    display: flex; flex-direction: column; gap: 10px;
-    align-self: flex-start; padding-top: 5px;
+    position: relative; 
+    right: 0%;
+    display: flex; 
+    flex-direction: column; 
+    gap: 10px;
+    align-self: flex-start;
+     padding-top: 5px;
 }
+
 .sidebar-buttons button, .sidebar-buttons input {
-    background-color: #1e1b4b; color: white; border: none;
-    padding: 10px 15px; border-radius: 8px; cursor: pointer; font-size: 14px;
+    background-color: #1e1b4b;
+     color: white; border: none;
+    padding: 10px 15px; 
+    border-radius: 8px; 
+    cursor: pointer; 
+    font-size: 14px;
     transition: background 0.2s;
 }
-.sidebar-buttons button:hover { background-color: #312e81; }
-.search {
-    position: relative; left: 20%; border: 1px solid white; border-radius: 5px;
-    text-align: center; padding: 10px 60px 10px; background-color: #7e79c049;
-}
-.search::placeholder { color: black; }
-.search:focus { background-color: #8f87fd; }
 
-#printerCounter { font-size: 1rem; color: #ffffff; font-weight: bold; }
-#bkpCounter { font-size: 1rem; color: #00ff95; font-weight: bold; }
+.sidebar-buttons button:hover {
+    background-color: #312e81; 
+}
+
+.search {
+    position: relative; 
+    left: 20%; 
+    border: 1px solid white; 
+    border-radius: 5px;
+    text-align: center; 
+    padding: 10px 60px 10px;
+    background-color: #7e79c049;
+}
+
+.search::placeholder { 
+    color: black; 
+}
+
+.search:focus { 
+    background-color: #8f87fd; 
+}
+
+#printerCounter { 
+    font-size: 1rem; 
+    color: #ffffff; 
+    font-weight: bold; 
+}
+
+#bkpCounter { 
+    font-size: 1rem; 
+    color: #00ff95; 
+    font-weight: bold; 
+}
 
 /* ===== Responsividade ===== */
 @media (max-width: 768px) {
