@@ -56,8 +56,14 @@ router.put("/:id", (req, res) => {
 });
 
 // DELETE - remover impressora
+// DELETE - remover impressora
 router.delete("/:id", (req, res) => {
-  db.run("DELETE FROM printers WHERE id = ?", req.params.id, function (err) {
+  const id = parseInt(req.params.id);
+  if (!id || isNaN(id)) {
+    return res.status(400).json({ error: "ID inválido ou ausente" });
+  }
+
+  db.run("DELETE FROM printers WHERE id = ?", [id], function (err) {
     if (err) return res.status(500).json({ error: err.message });
     res.json({ deleted: this.changes });
   });

@@ -32,6 +32,7 @@ const deletePrinterBtn = document.getElementById("deletePrinterBtn");
 // Dados
 let printers = [];
 let currentPrinterIndex = null;
+let currentPrinterId = null;
 let currentPhotoIndex = 0;
 let selectedPins = new Set();
 
@@ -83,10 +84,12 @@ async function carregarImpressorasDoServidor() {
         printers = await resp.json();
         console.log("Impressoras carregadas:", printers);
         renderPins();
+        updateDeleteAllButtonState();
     } catch (err) {
         console.error("Backend não respondeu, usando localStorage:", err);
         printers = JSON.parse(localStorage.getItem("printers")) || [];
         renderPins();
+        updateDeleteAllButtonState();
     }
 }
 
@@ -131,23 +134,6 @@ async function deletarImpressoraNoServidor(id) {
     }
 }
 
-//Exclusão em massa
-async function deletarVariasImpressorasNoServidor(ids) {
-    try {
-        const resp = await fetch(`${API_URL}/bulk-delete`, {
-            method: "POST",
-            headers: {"Content-Type": "application/json" },
-            body: JSON.stringify({ ids: ids })
-        });
-        if (!resp.ok) throw new Error("Erro ao deletar em massa");
-        return await resp.json();
-    } catch (err) {
-        console.error("Erro ao deletar em massa:", err);
-        return { delete: 0 };
-    }
-    
-}
-
 // ================== FUNÇÕES EXISTENTES ==================
 
 // Atualizar contadores
@@ -165,6 +151,18 @@ function updateCounters(filteredCount = null) {
 
     document.getElementById("bkpCounter").textContent =
         ` | ${backups} Backups ativos`;
+}
+
+function updateDeleteAllButtonState() {
+    if (printers.length === 0) {
+        deleteAllPrintersBtn.disable = true;
+        deleteAllPrintersBtn.style.opacity = "0.6";
+        deleteAllPrintersBtn.style.cursor = "not-allowed";
+    } else {
+        deleteAllPrintersBtn.disable = false;
+        deleteAllPrintersBtn.style.opacity = "1";
+        deleteAllPrintersBtn.style.cursor = "pointer";
+    }
 }
 
 // Ajustar tamanho dos pins conforme o zoom
@@ -231,10 +229,14 @@ function renderPins(data = printers) {
 
     updateCounters(data.length);
     adjustPins(panzoomInstance.getScale());
+    updateDeleteAllButtonState();
 }
 
 // Mostrar modal
 function showModal(printer, index) {
+    currentPrinterId = printer.id;
+    console.log("Modal aberto para impressora ID:", currentPrinterId);
+
     currentPrinterIndex = index;
     currentPhotoIndex = 0;
     if (!printer.photos || printer.photos.length === 0) printer.photos = ["./img/printer.png"];
@@ -356,7 +358,58 @@ function toggleSelectMode() {
 }
 
 // ======== Selecionar / Sair do modo ===============
-deletePrinterSidebarBtn.addEventListener("click", toggleSelectMode);
+confirmDeleteBtn.style.display = "none";
+
+deletePrinterSidebarBtn.addEventListener("click", () => {
+    selectMode = !selectMode;
+
+    if (selectMode) {
+        deletePrinterSidebarBtn.textContent = "Cancelar seleção";
+        confirmDeleteBtn.style.display = "inline-block";
+        alert("Modo de exclusão ativado! Clique nos pins para seleciona-los");
+
+    } else {
+        deletePrinterSidebarBtn.textContent = "Selecionar para Exclusão";
+        confirmDeleteBtn.style.display = "none";
+        selectedPins.clear();
+        document.querySelectorAll(".pin-wrapper").forEach(p => p.classList.remove("selected-pin"));
+    }
+});
+
+confirmDeleteBtn.addEventListener("click", async () => {
+    if (selectedPins.size === 0) {
+        alert("Nenhuma impressora selecionada!");
+        return;
+    }
+
+    const confirmar = confirm(`Tem certeza que deseja excluir ${selectedPins.size} impressora(s)?`);
+    if (!confirmar) return;
+
+    try {
+        const ids = Array.from(selectedPins);
+        const resp = await fetch(`${API_URL}/bulk-delete`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ ids })
+        });
+
+        if(!resp.ok) throw new Error("Erro ao excluir em massa");
+        const resultado = await resp.json();
+        console.log("Excluídas:", resultado);
+
+        printers = printers.filter(p => !selectedPins.has(p.id));
+        selectedPins.clear();
+        selectMode = false;
+        deletePrinterSidebarBtn.textContent = "Selecionar para exclusão.";
+        renderPins();
+        updateCounters();
+
+        alert(`${resultado.deleted} impressora(s) excluída(s) com sucesso.`);
+    } catch (err) {
+        console.error("Erro ao excluir em massa", err);
+        alert("Erro ao excluir impressoras selecionadas...");
+    }
+});
 
 // ========= APAGAR VÁRIOS PINS =====================
 confirmDeleteBtn.addEventListener("click", async () => {
@@ -364,22 +417,6 @@ confirmDeleteBtn.addEventListener("click", async () => {
         alertUser("Nenhuma impressora selecionada para exclusão.");
         return;
     }
-
-    const idsParaDeletar = Array.from(selectedPins);
-
-    console.log(`Iniciando exclusão de ${idsParaDeletar.length} impressora(s) via bulk-delete.`);
-
-    const resultado = await deletarVariasImpressorasNoServidor(idsParaDeletar);
-
-    await carregarImpressorasDoServidor();
-
-    toggleSelectMode();
-
-    alertUser(`${resultado.deleted} impressora(S) excluída(s) com sucesso.`);
-
-});
-
-
 
 // ==== Iterar IDs selecionados e confirmar exclusão =
 const deletionPromises =  Array.from(selectedPins).map(id => {
@@ -404,37 +441,69 @@ alertUser(`${deletionPromises.length} impressora(s) excluída(s) com sucesso.`);
 
 // Exclusão individual no modal ======================
 deletePrinterBtn.addEventListener("click", async () => {
-    if (currentPrinterIndex === null) return;
-
-    const printer = printers[currentPrinterIndex];
-    if (!confirm(`Deseja excluir a impressora: ${printer.model} (${printer.serial})?`)) {
+    if (!currentPrinterId) {
+        alert("Erro: nenhuma impressora selecionada!");
         return;
     }
 
-    const deleted = await deletarImpressoraNoServidor(printer.id);
+    const confirmar = confirm("Tem certeza que deseja excluir esta impressora?");
+    if (!confirmar) return;
 
-    if (deleted) {
-        printers.splice(currentPrinterIndex, 1);
+    try {
+        const resposta = await fetch(`${API_URL}/${currentPrinterId}`, { method: "DELETE" });
+        if (!resposta.ok) throw new Error("Erro ao deletar no servidor");
+        const data = await resposta.json();
+        console.log("Resposta do backend:", data);
 
+        printers = printers.filter(p => p.id !== currentPrinterId);
         renderPins();
+        updateCounters();
         modal.style.display = "none";
-        alertUser("Impressora excluída com sucesso.");
+        alert("Impressora excluída com sucesso!");
+    } catch (err) {
+        console.error(err);
+        alert("Falha ao excluir impressora!");
+    } finally {
+        currentPrinterId = null;
     }
 });
-
-
 
 // APAGAR TODAS AS IMPRESSORAS!
 const deleteAllPrintersBtn = document.getElementById("deleteAllPrintersBtn");
 
 deleteAllPrintersBtn.addEventListener("click", async () => {
     if (printers.length === 0) {
-        alertUser("Não há impressoras para apagar.");
+        alert("Não há impressoras para apagar.");
         return;
     }
 
-    if (!confirm(`ATENÇÃO! Você tem certeza que deseja APAGAR TODAS AS ${printers.length} IMPRESSORAS do sistema? Esta ação é irreversível.`)) {
+    const senha = prompt("Digite a senha de administrador para confirmar a exclusão total:");
+    if (senha !== "simpress1934@") {
+        alert("Senha incorreta. Operação cancelada.");
         return;
+    }
+
+    const confirmar = confirm(`ATENÇÃO! Você tem certeza que deseja APAGAR TODAS AS ${printers.length} IMPRESSORAS do sistema? Esta ação é irreversível.`)
+    if (!confirm) return;
+
+    try {
+        const resp = await fetch(`${API_URL}/bulk-delete`, {
+            method: "POST",
+            headers: {"Content-Type": "application/json" },
+            body: JSON.stringify({ ids: printers.map(p => p.id) })
+        });
+
+        if (!resp.ok) throw new Error("Erro ao apagar todas as impressoras.");
+        const resultado = await resp.json();
+
+        printers = [];
+        renderPins();
+
+        alert(`${resultado.deleted} impressora(s) apagada(s).`);
+        updateDeleteAllButtonState();
+    } catch (err) {
+        console.error("Erro ao apagar todas:", err);
+        alert("Erro ao apagar impressoras.");
     }
 
     alertUser("Iniciando exclusão em massa. Por favor, aguarde...");

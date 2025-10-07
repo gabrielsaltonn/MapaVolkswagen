@@ -34,13 +34,13 @@
 
             <!-- Novo conjunto de botões -->
             <button id="addPrinterSidebarBtn" type="button">Adicionar Impressora</button>
-            <button id="deletePrinterSidebarBtn" type="button">Selecionar para Exclusão</button>
-            <button id="confirmDeleteBtn" type="button" style="display: none; background-color: red; color: white;">
-                Confirmar Exclusão
-            </button>
+            
+            <div id="deleteButtonscontainer">
+                <button id="deletePrinterSidebarBtn" type="button">Selecionar para Exclusão</button>
+                <button id="confirmDeleteBtn" type="button">Confirmar Exclusão</button>
+            </div>
 
             <button id="deleteAllPrintersBtn" type="button">Apagar todas as impressoras</button>
-
         </div>
     </div>
    
@@ -81,9 +81,7 @@
             </form>
            
             <!-- Exclusão individual -->
-            <button class="Delete" id="deletePrinterBtn" style="background-color: red; color: white; margin-top: 10px;">
-                Excluir Impressora
-            </button>
+            <button class="Delete" id="deletePrinterBtn">Excluir Impressora</button>
         </div>  
     </div>
  

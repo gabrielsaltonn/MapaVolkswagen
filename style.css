@@ -119,22 +119,22 @@ header h1 {
 
 /* Pin padrão */
 .pin-wrapper {
-  position: absolute;
-  transform: translate(-50%, -50%);
-  cursor: pointer;
-  z-index: 10;
+    position: absolute;
+    transform: translate(-50%, -50%);
+    cursor: pointer;
+    z-index: 10;
 }
 
 .pin-circle {
-  position: absolute;
-  left: 50%;
-  top: 0;
-  transform: translateX(-50%);
-  border-radius: 50%;
-  border: 1px solid white;
-  box-shadow: 0 0 3px rgba(0,0,0,0.45);
-  background: linear-gradient(80deg, #ab45ff, #2a366e, #7236ff);
-  display: block;
+    position: absolute;
+    left: 50%;
+    top: 0;
+    transform: translateX(-50%);
+    border-radius: 50%;
+    border: 1px solid white;
+    box-shadow: 0 0 3px rgba(0,0,0,0.45);
+    background: linear-gradient(80deg, #ab45ff, #2a366e, #7236ff);
+    display: block;
 }
 
 .pin-wrapper:hover .pin-circle {
@@ -142,13 +142,24 @@ header h1 {
 }
 
 .pin-wrapper.selected-pin .pin-circle {
-  outline: 2px solid rgba(255,255,255,0.35);
+    outline: 2px solid rgba(255,255,255,0.35);
 }
 
 /* Pin selecionado */
-.selected-pin {
-    background-color: rgb(0, 255, 255) !important;
-    border: 2px solid rgb(255, 0, 0);
+.selected-pin .pin-circle {
+    background: radial-gradient(circle, #ff0000, #b00000);
+    animation: flutuar 1.2s ease-in-out infinite alternate;
+    box-shadow: 0 0 10px 3px rgba(255, 0, 0, 0.7);
+    transform: translate(-50%, -60%) scale(1.2);
+}
+
+@keyframes flutuar {
+  0% {
+    transform: translate(-50%, -60%) scale(1.2);
+  }
+  100% {
+    transform: translate(-50%, -70%) scale(1.25);
+  }
 }
 
 /* Modal */
@@ -192,6 +203,7 @@ header h1 {
 .close:hover {
     background-color: #312e81;
     border-radius: 5px;
+    transform: scale(1.05);
 }
 
 /*Fotos*/
@@ -223,7 +235,7 @@ header h1 {
 }
 
 .mFoto.Esquerda { 
-    left: -30px; 
+    left: -30px;
 }
 
 .mFoto.Direita { 
@@ -242,6 +254,7 @@ header h1 {
 
 .actFotos button:hover { 
     background: #312e81; 
+    transform: scale(1.05);
 }
 
 /*Formulário do modal*/
@@ -274,7 +287,8 @@ header h1 {
 }
 
 #salvarImpressora:hover { 
-    background-color: #312e81; 
+    background-color: #312e81;
+    transform: scale(1.05);
 }
 
 .checkBkp { 
@@ -299,7 +313,8 @@ header h1 {
 }
 
 #deletePrinterBtn:hover { 
-    background: #312e81; 
+    background-color: #312e81; 
+    transform: scale(1.05);
 }
 
 /* Sidebar */
@@ -325,7 +340,18 @@ header h1 {
 
 .sidebar-buttons button:hover {
     background-color: #312e81; 
+    transform: scale(1.05);
 }
+
+#deletePrinterSidebarBtn {
+    padding: 10px 44px;
+}
+
+
+#confirmDeleteBtn {
+    display: none;
+}
+
 
 .search {
     position: relative; 
