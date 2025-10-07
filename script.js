@@ -131,6 +131,23 @@ async function deletarImpressoraNoServidor(id) {
     }
 }
 
+//Exclusão em massa
+async function deletarVariasImpressorasNoServidor(ids) {
+    try {
+        const resp = await fetch(`${API_URL}/bulk-delete`, {
+            method: "POST",
+            headers: {"Content-Type": "application/json" },
+            body: JSON.stringify({ ids: ids })
+        });
+        if (!resp.ok) throw new Error("Erro ao deletar em massa");
+        return await resp.json();
+    } catch (err) {
+        console.error("Erro ao deletar em massa:", err);
+        return { delete: 0 };
+    }
+    
+}
+
 // ================== FUNÇÕES EXISTENTES ==================
 
 // Atualizar contadores
@@ -170,14 +187,6 @@ function adjustPins(scale) {
             pin.style.boxShadow = "0 0 3px rgba(0,0,0,0.45)";
         }
     });
-
-    document.querySelectorAll(".pin-tip").forEach(tip => {
-        tip.style.display = size <= 1.5 ? "none" : "block";
-        if (size > 1.5) {
-            tip.style.width = `${size * 0.8}px`;
-            tip.style.height = `${size * 1.2}px`;
-        }
-    });
 }
 
 // Renderizar pins
@@ -198,14 +207,9 @@ function renderPins(data = printers) {
 
         const circle = document.createElement("div");
         circle.className = "pin-circle";
-        circle.style.background = printer.backup ? "green" : "red";
-
-        const tip = document.createElement("div");
-        tip.className = "pin-tip";
-        tip.style.background = printer.backup ? "green" : "red";
+        circle.style.background = printer.backup ? "green" : "";
 
         pinWrapper.appendChild(circle);
-        pinWrapper.appendChild(tip);
 
         pinWrapper.addEventListener("click", () => {
             if (selectMode) {
@@ -334,6 +338,122 @@ panzoomArea.addEventListener("dblclick", async (e) => {
 
     printers.push(novaImpressora)
     renderPins(printers);
+});
+
+// ================== EXCLUSÃO DE IMPRESSORAS ========
+function toggleSelectMode() {
+    selectMode = !selectMode;
+    selectedPins.clear();
+
+    document.querySelectorAll(".pin-wrapper").forEach(pin => {
+        pin.classList.remove("selected-pin");
+    });
+
+    if (selectMode) {
+        deletePrinterSidebarBtn.textContent = "Sair do modo de seleção";
+        alertUser("Modo de seleção desativado.");
+    }
+}
+
+// ======== Selecionar / Sair do modo ===============
+deletePrinterSidebarBtn.addEventListener("click", toggleSelectMode);
+
+// ========= APAGAR VÁRIOS PINS =====================
+confirmDeleteBtn.addEventListener("click", async () => {
+    if (selectedPins.size === 0) {
+        alertUser("Nenhuma impressora selecionada para exclusão.");
+        return;
+    }
+
+    const idsParaDeletar = Array.from(selectedPins);
+
+    console.log(`Iniciando exclusão de ${idsParaDeletar.length} impressora(s) via bulk-delete.`);
+
+    const resultado = await deletarVariasImpressorasNoServidor(idsParaDeletar);
+
+    await carregarImpressorasDoServidor();
+
+    toggleSelectMode();
+
+    alertUser(`${resultado.deleted} impressora(S) excluída(s) com sucesso.`);
+
+});
+
+
+
+// ==== Iterar IDs selecionados e confirmar exclusão =
+const deletionPromises =  Array.from(selectedPins).map(id => {
+    const printer = printers.find(p => p.id === id);
+    if (printer) {
+        console.log(`Deletando impressora ID: ${printer.id}`);
+        return deletarImpressoraNoServidor(printer.id);
+    }
+    return Promise.resolve(null);
+});
+
+//========== Esperar deletar tudo =============
+await Promise.all(deletionPromises);
+
+// ============ Recarregar a lista do servidor ========
+await carregarImpressorasDoServidor();
+
+toggleSelectMode();
+
+alertUser(`${deletionPromises.length} impressora(s) excluída(s) com sucesso.`);
+});
+
+// Exclusão individual no modal ======================
+deletePrinterBtn.addEventListener("click", async () => {
+    if (currentPrinterIndex === null) return;
+
+    const printer = printers[currentPrinterIndex];
+    if (!confirm(`Deseja excluir a impressora: ${printer.model} (${printer.serial})?`)) {
+        return;
+    }
+
+    const deleted = await deletarImpressoraNoServidor(printer.id);
+
+    if (deleted) {
+        printers.splice(currentPrinterIndex, 1);
+
+        renderPins();
+        modal.style.display = "none";
+        alertUser("Impressora excluída com sucesso.");
+    }
+});
+
+
+
+// APAGAR TODAS AS IMPRESSORAS!
+const deleteAllPrintersBtn = document.getElementById("deleteAllPrintersBtn");
+
+deleteAllPrintersBtn.addEventListener("click", async () => {
+    if (printers.length === 0) {
+        alertUser("Não há impressoras para apagar.");
+        return;
+    }
+
+    if (!confirm(`ATENÇÃO! Você tem certeza que deseja APAGAR TODAS AS ${printers.length} IMPRESSORAS do sistema? Esta ação é irreversível.`)) {
+        return;
+    }
+
+    alertUser("Iniciando exclusão em massa. Por favor, aguarde...");
+
+    // Mapeia a lista de impressoras para um array de Promises de deleção
+    const deletionPromises = printers.map(p => {
+        return deletarImpressoraNoServidor(p.id);
+    });
+    
+    // Espera que todas as chamadas de deleção sejam concluídas
+    const results = await Promise.all(deletionPromises);
+
+    // Filtra para contar apenas as deleções bem-sucedidas (assumindo que deletarImpressoraNoServidor retorna um objeto ou true se ok)
+    const successCount = results.filter(r => r !== undefined && r !== null).length;
+
+    // Recarrega o estado do servidor, o que deve resultar em uma lista vazia
+    await carregarImpressorasDoServidor(); 
+    
+    alertUser(`Exclusão em massa concluída. ${successCount} impressora(s) apagada(s).`);
 });
 
 // ================== INICIALIZAÇÃO ==================
