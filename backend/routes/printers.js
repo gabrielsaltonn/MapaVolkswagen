@@ -80,4 +80,15 @@ router.post("/bulk-delete", (req, res) => {
   });
 });
 
+router.post("/check-password", (req, res) => {
+  const { password } = req.body;
+  const correct = process.env.ADMIN_PASSWORD;
+
+  if(password === correct) {
+    return res.json({ Valid: true});
+  } else {
+    return res.status(401).json({ valid: false });
+  }
+});
+
 module.exports = router;
