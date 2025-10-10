@@ -53,7 +53,7 @@
             <div class="seçãoDeFotos">
                 <div class="efeitoCarrossel">
                     <button class="mFoto Esquerda" id="fotoAnterior">&#10094;</button>
-                    <img id="previewFoto" src="./img/printer.png" alt="Não há fotos">
+                    <img id="previewFoto" src="./printers/printer.png" alt="Não há fotos">
                     <button class="mFoto Direita" id="proxFoto">&#10095;</button>
                 </div>
                 <div class="actFotos">
@@ -84,7 +84,23 @@
             <button class="Delete" id="deletePrinterBtn">Excluir Impressora</button>
         </div>  
     </div>
- 
+
+    <div class="modal" id="passwordModal" style="display: none;">
+        <div class="card">
+            <h3>Confirme a senha do administrador</h3>
+            <input
+                type="password"
+                id="adminPassword"
+                placeholder="Digite a senha"
+                autocomplete="off"
+            />
+            <div class="botoesSenha">
+                <button id="confirmPasswordBtn">Confirmar</button>
+                <button id="cancelPasswordBtn">Cancelar</button>
+            </div>
+        </div>
+    </div>
+
     <!-- Scripts -->
     <script src="https://unpkg.com/@panzoom/panzoom/dist/panzoom.min.js"></script>
     <script src="script.js"></script>

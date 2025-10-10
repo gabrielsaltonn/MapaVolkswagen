@@ -352,6 +352,13 @@ header h1 {
     display: none;
 }
 
+#deleteAllPrintersBtn.disabled-btn, #deleteAllPrintersBtn:disabled {
+    cursor: not-allowed;
+    pointer-events: none;
+    transform: none !important;
+    transition: all 0.2s ease-in-out;
+}
+
 
 .search {
     position: relative; 

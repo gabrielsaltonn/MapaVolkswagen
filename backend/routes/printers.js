@@ -1,7 +1,7 @@
 // routes/printers.js
 const express = require("express");
 const router = express.Router();
-const db = require("../db");
+const db = require("../db.js");
 
 // GET - listar todas impressoras
 router.get("/", (req, res) => {
@@ -85,7 +85,7 @@ router.post("/check-password", (req, res) => {
   const correct = process.env.ADMIN_PASSWORD;
 
   if(password === correct) {
-    return res.json({ Valid: true});
+    return res.json({ valid: true});
   } else {
     return res.status(401).json({ valid: false });
   }

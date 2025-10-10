@@ -1,3 +1,5 @@
+document.addEventListener("DOMContentLoaded", () => {
+
 // Seletores principais
 const mapWrap = document.getElementById('mapWrap');
 const floor = document.getElementById('floor');
@@ -6,6 +8,7 @@ const modal = document.getElementById('modal');
 const closeModal = document.getElementById('closeModal');
 const deletePrinterSidebarBtn = document.getElementById('deletePrinterSidebarBtn');
 const confirmDeleteBtn = document.getElementById("confirmDeleteBtn");
+
 
 // Formulário do modal
 const mModel = document.getElementById('mModel');
@@ -155,13 +158,11 @@ function updateCounters(filteredCount = null) {
 
 function updateDeleteAllButtonState() {
     if (printers.length === 0) {
-        deleteAllPrintersBtn.disable = true;
-        deleteAllPrintersBtn.style.opacity = "0.6";
-        deleteAllPrintersBtn.style.cursor = "not-allowed";
+        deleteAllPrintersBtn.disabled = true;
+        deleteAllPrintersBtn.classList.add("disabled-btn");
     } else {
-        deleteAllPrintersBtn.disable = false;
-        deleteAllPrintersBtn.style.opacity = "1";
-        deleteAllPrintersBtn.style.cursor = "pointer";
+        deleteAllPrintersBtn.disabled = false;
+        deleteAllPrintersBtn.classList.remove("disabled-btn");
     }
 }
 
@@ -337,9 +338,6 @@ panzoomArea.addEventListener("dblclick", async (e) => {
         if (addModeTimer) clearTimeout(addModeTimer);
         addModeTimer = setTimeout(disableAddMode, 60000);
     }
-
-    printers.push(novaImpressora)
-    renderPins(printers);
 });
 
 // ================== EXCLUSÃO DE IMPRESSORAS ========
@@ -470,43 +468,71 @@ deletePrinterBtn.addEventListener("click", async () => {
 
 // APAGAR TODAS AS IMPRESSORAS!
 const deleteAllPrintersBtn = document.getElementById("deleteAllPrintersBtn");
+const passwordModal = document.getElementById("passwordModal");
+const adminPasswordInput = document.getElementById("adminPassword");
+const confirmPasswordBtn = document.getElementById("confirmPasswordBtn");
+const cancelPasswordBtn = document.getElementById("cancelPasswordBtn");
 
-deleteAllPrintersBtn.addEventListener("click", async () => {
+deleteAllPrintersBtn.addEventListener("click", () => {
     if (printers.length === 0) {
         alert("Não há impressoras para apagar.");
         return;
     }
+    passwordModal.style.display = "flex";
+    adminPasswordInput.value ="";
+    adminPasswordInput.focus();
+});
 
-    const senha = prompt("Digite a senha de administrador para confirmar a exclusão total:");
-    if (senha !== "simpress1934@") {
-        alert("Senha incorreta. Operação cancelada.");
-        return;
-    }
+cancelPasswordBtn.addEventListener("click", () => {
+    passwordModal.style.display = "none";
+});
 
-    const confirmar = confirm(`ATENÇÃO! Você tem certeza que deseja APAGAR TODAS AS ${printers.length} IMPRESSORAS do sistema? Esta ação é irreversível.`)
-    if (!confirm) return;
+confirmPasswordBtn.addEventListener("click", async () => {
+    const senha = adminPasswordInput.value.trim();
+    if (!senha) return alert("Digite a senha.");
 
-    try {
-        const resp = await fetch(`${API_URL}/bulk-delete`, {
+    try{
+        const resp = await fetch(`${API_URL}/check-password`, {
             method: "POST",
-            headers: {"Content-Type": "application/json" },
-            body: JSON.stringify({ ids: printers.map(p => p.id) })
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ password: senha })
         });
 
-        if (!resp.ok) throw new Error("Erro ao apagar todas as impressoras.");
-        const resultado = await resp.json();
+        if (!resp.ok) throw new Error("Senha incorreta.");
+        const result = await resp.json();
+        if (!result.valid) {
+            alert("Senha incorreta.");
+            adminPasswordInput.value = "";
+            adminPasswordInput.focus();
+            return;
+        }
+
+        const confirmar = confirm("Tem certeza que deseja apagar TODAS as impressoras?!");
+        if (!confirmar) {
+            passwordModal.style.display = "none";
+            return;
+        }
+
+        const respDelete = await fetch(`${API_URL}/bulk-delete`, {
+           method: "POST",
+           headers: { "Content-Type": "application/json" },
+           body: JSON.stringify({ ids: printers.map(p => p.id) })
+        });
+
+        if (!respDelete.ok) throw new Error("Erro ao apagar impressoras.");
+        const resultado = await respDelete.json();
 
         printers = [];
         renderPins();
+        updateDeleteAllButtonState();
 
         alert(`${resultado.deleted} impressora(s) apagada(s).`);
-        updateDeleteAllButtonState();
     } catch (err) {
-        console.error("Erro ao apagar todas:", err);
-        alert("Erro ao apagar impressoras.");
+        console.error("Erro:", err);
+        alert(err.message);
+    } finally {
+        passwordModal.style.display = "none";
     }
-
-    alertUser("Iniciando exclusão em massa. Por favor, aguarde...");
 
     // Mapeia a lista de impressoras para um array de Promises de deleção
     const deletionPromises = printers.map(p => {
@@ -527,3 +553,5 @@ deleteAllPrintersBtn.addEventListener("click", async () => {
 
 // ================== INICIALIZAÇÃO ==================
 carregarImpressorasDoServidor();
+
+});
