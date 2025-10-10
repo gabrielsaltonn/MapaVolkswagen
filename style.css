@@ -119,14 +119,14 @@ header h1 {
 
 /* Pin padrão */
 .pin-wrapper {
-    position: absolute;
+    position: relative;
     transform: translate(-50%, -50%);
     cursor: pointer;
     z-index: 10;
 }
 
 .pin-circle {
-    position: absolute;
+    position: relative;
     left: 50%;
     top: 0;
     transform: translateX(-50%);

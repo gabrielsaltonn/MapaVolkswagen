@@ -53,6 +53,11 @@ const panzoomInstance = Panzoom(panzoomArea, {
 });
 panzoomArea.parentElement.addEventListener('wheel', panzoomInstance.zoomWithWheel);
 
+panzoomArea.addEventListener('panzoomzoom', (event) => {
+    const scale = event.detail.scale;
+    adjustPins(scale);
+});
+
 // ================== API ==================
 const API_URL = "http://localhost:3000/api/impressoras";
 
@@ -168,11 +173,10 @@ function updateDeleteAllButtonState() {
 
 // Ajustar tamanho dos pins conforme o zoom
 function adjustPins(scale) {
-    const minSize = 1;
-    const maxSize = 10;
+    const minSize = 2;
+    const maxSize = 15;
     const zoomMax = panzoomInstance.getOptions().maxScale;
     const zoomMin = panzoomInstance.getOptions().minScale;
-
     const size = Math.max(minSize, maxSize - ((scale - zoomMin) / (zoomMax - zoomMin)) * (maxSize - minSize));
 
     document.querySelectorAll(".pin-circle").forEach(pin => {
@@ -274,7 +278,7 @@ savePrinterBtn.addEventListener("click", async (e) => {
         photos: printer.photos
     };
 
-    await atualizarImpressoraNoServidor(printer.id, atualizado);
+    const updatedPrinter = await atualizarImpressoraNoServidor(printer.id, atualizado);
     if (updatedPrinter) {
         printers[currentPrinterIndex] = { ...printer, ...updatedPrinter };
         renderPins();
