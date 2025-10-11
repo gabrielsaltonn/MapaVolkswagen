@@ -26,7 +26,14 @@ const prevPhotoBtn = document.getElementById('fotoAnterior');
 const nextPhotoBtn = document.getElementById('proxFoto');
 const addPhotoBtn = document.getElementById('addFotoBtn');
 const removePhotoBtn = document.getElementById('removerFoto');
-const photoInput = document.getElementById('adFoto');
+const galleryInput = document.getElementById('galleryInput');
+const cameraInput = document.getElementById('cameraInput');
+
+//Modal de escolha das fotos
+const photoChoiceModal = document.getElementById('photoChoiceModal');
+const takePictureBtn = document.getElementById('takePictureBtn');
+const chooseGalleryBtn = document.getElementById('chooseGalleryBtn');
+const cancelChoiceBtn = document.getElementById('cancelChoiceBtn');
 
 // Botões adicionais
 const addPrinterBtn = document.getElementById("addPrinterSidebarBtn");
@@ -240,19 +247,21 @@ function renderPins(data = printers) {
 // Mostrar modal
 function showModal(printer, index) {
     currentPrinterId = printer.id;
-    console.log("Modal aberto para impressora ID:", currentPrinterId);
-
     currentPrinterIndex = index;
     currentPhotoIndex = 0;
-    if (!printer.photos || printer.photos.length === 0) printer.photos = ["./img/printer.png"];
-    photoPreview.src = printer.photos[0];
+
+    if(!printer.photos || !Array.isArray(printer.photos)) printer.photos =[];
+    if (printer.photos.length === 0) printer.photos.push("./printers/printer.png");
+
+    updatePhotoPreview();
+
     mModel.value = printer.model || "";
     mSerial.value = printer.serial || "";
     mIP.value = printer.ip || "";
     mLoc.value = printer.loc || "";
     mCol.value = printer.col || "";
     mNotes.value = printer.notes || "";
-    mBackup.checked = printer.backup ? true : false;
+    mBackup.checked = !!printer.backup;
     modal.style.display = "flex";
 }
 
@@ -284,6 +293,82 @@ savePrinterBtn.addEventListener("click", async (e) => {
         renderPins();
         modal.style.display="none";
     }
+});
+
+//Lógica de fotos
+galleryInput.addEventListener("change", handlePhotoInput);
+cameraInput.addEventListener("change", handlePhotoInput);
+
+function handlePhotoInput(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+
+  const reader = new FileReader();
+  reader.onload = () => {
+    const imgBase64 = reader.result;
+    const printer = printers[currentPrinterIndex];
+    if (!printer.photos) printer.photos = [];
+    printer.photos.push(imgBase64);
+    updatePhotoPreview();
+    atualizarImpressoraNoServidor(printer.id, { photos: printer.photos });
+  };
+  reader.readAsDataURL(file);
+}
+
+function updatePhotoPreview(){
+    const printer = printers[currentPrinterIndex];
+    if (printer && printer.photos && printer.photos.length > 0){
+        photoPreview.src = printer.photos[currentPhotoIndex];
+    } else {
+        photoPreview.src = "./printers/printer.png";
+    }
+}
+
+prevPhotoBtn.addEventListener('click', () => {
+    const printer = printers[currentPrinterIndex];
+    if (printer.photos.length > 1) {
+        currentPhotoIndex = (currentPhotoIndex - 1 + printer.photos.length) % priner.photos.length;
+        updatePhotoPreview();
+    }
+})
+
+nextPhotoBtn.addEventListener('click', () => {
+    const printer = printers[currentPrinterIndex];
+    if (printer.photos.length > 1) {
+        currentPhotoIndex = (currentPhotoIndex + 1) % printer.photos.length;
+        updatePhotoPreview();
+    }
+});
+
+addPhotoBtn.addEventListener("click", () => {
+  // Exibe o modal de escolha
+  photoChoiceModal.style.display = "flex";
+});
+
+// Botão "Câmera"
+takePictureBtn.addEventListener("click", () => {
+  cameraInput.click();
+  photoChoiceModal.style.display = "none";
+});
+
+// Botão "Galeria"
+chooseGalleryBtn.addEventListener("click", () => {
+  galleryInput.click();
+  photoChoiceModal.style.display = "none";
+});
+
+// Botão "Cancelar"
+cancelChoiceBtn.addEventListener("click", () => {
+  photoChoiceModal.style.display = "none";
+});
+
+photoPreview.addEventListener("dragover", (e) => {
+  e.preventDefault();
+  photoPreview.classList.add("drag-over");
+});
+
+photoPreview.addEventListener("dragleave", () => {
+  photoPreview.classList.remove("drag-over");
 });
 
 // ================== ADICIONAR IMPRESSORA ==================

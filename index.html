@@ -57,7 +57,9 @@
                     <button class="mFoto Direita" id="proxFoto">&#10095;</button>
                 </div>
                 <div class="actFotos">
-                    <input type="file" id="adFoto" accept="image/*" capture="ambiente" hidden>
+                    <input type="file" id="galleryInput" accept="image/*" hidden>
+                    <input type="file" id="cameraInput" accept="image/*" capture="environment" hidden>
+
                     <button id="addFotoBtn">Adicionar / Tirar foto</button>
                     <button id="removerFoto">Remover Foto</button>
                 </div>
@@ -97,6 +99,18 @@
             <div class="botoesSenha">
                 <button id="confirmPasswordBtn">Confirmar</button>
                 <button id="cancelPasswordBtn">Cancelar</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="photoChoiceModal" style="display: none;">
+        <div class="card card-choice>">
+            <h3>Adicionar Foto</h3>
+            <p>escolha uma opção:</p>
+            <div class="botõesEscolha">
+                <button id="takePictureBtn">Câmera</button>
+                <button id="chooseGalleryBtn">Galeria</button>
+                <button id="cancelChoiceBtn">Cancelar</button>
             </div>
         </div>
     </div>
