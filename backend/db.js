@@ -1,50 +1,36 @@
-// db.js
+// server.js
 require("dotenv").config();
-const mysql = require("mysql2/promise");
+const express = require("express");
+const cors = require("cors");
+const app = express();
+const PORT = process.env.PORT || 3000;
 
-//  Detecta ambiente (local ou Render/Railway)
-const isProduction = process.env.NODE_ENV === "production";
-
-//  Usa as variáveis certas conforme o ambiente
-const dbConfig = {
-  host: process.env.MYSQLHOST ||
-        (isProduction ? "caboose.proxy.rlwy.net" : "localhost"),
-  user: process.env.MYSQLUSER || "root",
-  password: process.env.MYSQLPASSWORD || "printersdb",
-  database: process.env.MYSQLDATABASE || "railway",
-  port: process.env.MYSQLPORT ||
-        (isProduction ? 57362 : 3306),
-  waitForConnections: true,
-  connectionLimit: 10,
-};
-
-//  Cria pool de conexões
-const db = mysql.createPool(dbConfig);
-
-//Testa conexão ao iniciar
-(async () => {
-  try {
-    const conn = await db.getConnection();
-    console.log("✅ Conectado ao banco MySQL!");
-    await conn.query(`
-      CREATE TABLE IF NOT EXISTS printers (
-        id INT AUTO_INCREMENT PRIMARY KEY,
-        model VARCHAR(255),
-        serial VARCHAR(255),
-        ip VARCHAR(255),
-        loc VARCHAR(255),
-        col VARCHAR(255),
-        notes TEXT,
-        backup BOOLEAN,
-        photos JSON,
-        x FLOAT,
-        y FLOAT
-      );
-    `);
-    conn.release();
-  } catch (err) {
-    console.error("❌ Erro ao conectar no MySQL:", err);
+// ✅ Configuração CORS completa
+app.use((req, res, next) => {
+  res.header("Access-Control-Allow-Origin", "*"); // permite qualquer origem (ou restrinja se quiser)
+  res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  
+  // responde pré-requisições (preflight)
+  if (req.method === "OPTIONS") {
+    return res.sendStatus(200);
   }
-})();
+  next();
+});
 
-module.exports = db;
+// Middleware padrão
+app.use(express.json());
+
+// Rotas
+const printersRouter = require("./routes/printers.js");
+app.use("/api/impressoras", printersRouter);
+
+// Rota principal
+app.get("/", (req, res) => {
+  res.send("Servidor funcionando! ✅");
+});
+
+// Inicializa servidor
+app.listen(PORT, () => {
+  console.log(`Servidor rodando em http://localhost:${PORT}`);
+});
