@@ -66,7 +66,7 @@ panzoomArea.addEventListener('panzoomzoom', (event) => {
 });
 
 // ================== API ==================
-const API_URL = "http://localhost:3000/api/impressoras";
+const API_URL ="https://mapa-impressoras.onrender.com/api/impressoras";
 
 // ================== FILTRO DE BUSCA ======
 const searchInput = document.getElementById("search");
@@ -181,7 +181,7 @@ function updateDeleteAllButtonState() {
 // Ajustar tamanho dos pins conforme o zoom
 function adjustPins(scale) {
     const minSize = 2;
-    const maxSize = 15;
+    const maxSize = 30;
     const zoomMax = panzoomInstance.getOptions().maxScale;
     const zoomMin = panzoomInstance.getOptions().minScale;
     const size = Math.max(minSize, maxSize - ((scale - zoomMin) / (zoomMax - zoomMin)) * (maxSize - minSize));
@@ -217,7 +217,24 @@ function renderPins(data = printers) {
 
         const circle = document.createElement("div");
         circle.className = "pin-circle";
-        circle.style.background = printer.backup ? "green" : "";
+
+        const fotoPrincipal = printer.photos && printer.photos.length > 0 ? printer.photos[0]: "./printers/printer.png";
+
+        circle.style.backgroundImage = `url(${fotoPrincipal})`;
+        circle.style.backgroundSize = "cover";
+        circle.style.backgroundPosition = "center";
+        circle.style.border = "1px solid white";
+        circle.style.borderRadius = "50%";
+        circle.style.width = "42px";
+        circle.style.height = "42px";
+        circle.style.boxShadow = "0 0 6px rgba(0,0,0,0.6)";
+        circle.style.cursor = "pointer";
+        circle.style.transition = "transform 0.2s ease";
+
+        // Destaque se for impressora backup
+        if (printer.backup) {
+            circle.style.outline = "1px solid limegreen";
+        }
 
         pinWrapper.appendChild(circle);
 

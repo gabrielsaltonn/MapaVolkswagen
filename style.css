@@ -89,10 +89,10 @@ header h1 {
 #mapWrap {
     position: relative;
     right: 10%;
-    width: 50%;
+    width: 60%;
     border: 5px rgb(0, 255, 179);
     border-radius: 20px;
-    background: white;
+    background: rgb(255, 255, 255);
     box-shadow: 4px 4px 20px 4px rgb(0, 0, 0);
 }
 
@@ -344,7 +344,7 @@ header h1 {
 }
 
 #deletePrinterSidebarBtn {
-    padding: 10px 44px;
+    padding: 10px 50px;
 }
 
 
