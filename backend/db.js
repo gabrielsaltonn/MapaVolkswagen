@@ -1,21 +1,26 @@
+// db.js
 require("dotenv").config();
 const mysql = require("mysql2/promise");
 
+// Conexão com o banco de dados MySQL
 const db = mysql.createPool({
-  hots: process.env.DB_HOST || "localhost",
-  user: process.env.DB_USER || "root",
-  password: process.env.DB_PASS || "printersdb",
-  port: process.env.DB_PORT | 3306, 
+  host: process.env.MYSQLHOST || "localhost",
+  user: process.env.MYSQLUSER || "root",
+  password: process.env.MYSQLPASSWORD || "printersdb",
+  database: process.env.MYSQLDATABASE || "railway",
+  port: process.env.MYSQLPORT || 3306,
   waitForConnections: true,
-  connectionLimit: 0    
+  connectionLimit: 10,
 });
 
-(async() => {
-  try{
+// Criar tabela se não existir
+(async () => {
+  try {
     const conn = await db.getConnection();
     console.log("Conectado ao banco MySQL!");
+
     await conn.query(`
-      CREATE TABLE IF NOT EXISTIS PRINTERS (
+      CREATE TABLE IF NOT EXISTS printers (
         id INT AUTO_INCREMENT PRIMARY KEY,
         model VARCHAR(255),
         serial VARCHAR(255),
@@ -26,9 +31,10 @@ const db = mysql.createPool({
         backup BOOLEAN,
         photos JSON,
         x FLOAT,
-        y float
+        y FLOAT
       );
     `);
+
     conn.release();
   } catch (err) {
     console.error("Erro ao conectar no MySQL:", err);

@@ -1,0 +1,17 @@
+# _config.yml
+title: Mapa Volkswagen
+description: Mapa interativo de impressoras desenvolvido com JavaScript e Node.js
+
+exclude:
+  - node_modules
+  - backend
+  - package.json
+  - package-lock.json
+  - printers.db
+  - .env
+  - README.md
+  - server.js
+  - db.js
+  - printers.js
+
+theme: jekyll-theme-primer
